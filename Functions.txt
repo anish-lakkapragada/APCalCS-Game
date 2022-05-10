@@ -25,6 +25,3 @@ x^2 + 2x - 1
 42x^3 + cos(x)
 5x^3 + sin(x)
 56x^3 - cos(x)
-
-
-GENERAL TERM: <single term poly func> +/- cos(x)/sin(x)
