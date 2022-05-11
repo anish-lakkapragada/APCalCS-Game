@@ -67,12 +67,16 @@ public class TileManager {
             return 0;
         }
 
-        grid[curRow][curCol].toggleSelected(g);
-        grid[newRow][newCol].toggleSelected(g);
+        grid[curRow][curCol].toggleSelected();
+        grid[newRow][newCol].toggleSelected();
         curRow = newRow;
         curCol = newCol;
 
         return 1;
+    }
+
+    public void setLabels(String[][] gridLabels) {
+        // go through each of the tiles and set their label.
     }
 
     /**

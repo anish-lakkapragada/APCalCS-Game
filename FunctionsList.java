@@ -26,10 +26,6 @@ public class FunctionsList {
         scan.close();
     }
 
-    public static String differentiate(String function) {
-        return "";
-    }
-
     public boolean hasQuestions() {
         return !questionsQueue.isEmpty();
     }
