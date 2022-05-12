@@ -2,17 +2,15 @@ import java.util.*;
 import javax.swing.tree.TreeModel;
 
 /**
- * Write the method
- * 
- * 
- * 
- * 
- * 
+ * Performs differentiating calculations.
  */
 public class Differentiate {
 
     private HashMap<String, String> derivatives;
 
+    /**
+     * Constructor method.
+     */
     public Differentiate() {
         derivatives = new HashMap<String, String>();
         derivatives.put("cos(x)", "- sin(x)");
