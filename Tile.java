@@ -14,16 +14,18 @@ public class Tile
     private Color currentColor = null;
     private Line2D[] lines;
     private JLabel label;
+    private JFrame frame;
 
     private final Color selectedColor = Color.BLUE;
     private final Color defaultColor = Color.BLACK;
 
-    public Tile(String lbl, int tX, int tY, int width, int height) {
+    public Tile(String lbl, int tX, int tY, int width, int height, JFrame frame) {
         topLeftX = tX;
         topLeftY = tY;
         this.label = new JLabel(lbl);
         this.width = width;
         this.height = height;
+        this.frame = frame;
         lines = new Line2D[4];
 
         currentColor = defaultColor;
@@ -31,7 +33,7 @@ public class Tile
 
     @Override
     public void paintComponent(Graphics g) {
-        System.out.println("tile paint component is called baby");
+        // System.out.println("tile paint component is called baby");
 
         super.paintComponent(g);
 
@@ -44,14 +46,18 @@ public class Tile
         g2.drawLine(topLeftX, topLeftY + height, topLeftX + width, topLeftY + height);
         g2.drawLine(topLeftX, topLeftY, topLeftX, topLeftY + height);
         g2.drawLine(topLeftX + width, topLeftY, topLeftX + width, topLeftY + height);
+
+        addLabel(currentColor);
     }
 
-    public void drawLabel(Color color) {
-        // set the bounds for the JLabel and add it in the middle of this tile
+    public void addLabel(Color color) {
+        label.setBounds((int) (topLeftX + 0.1 * width), (int) (topLeftY + 0.1 * height), (int) (width * 0.9), height);
+        frame.add(label);
+        System.out.println(label.getText());
     }
 
     public void setLabel(String newLabel) {
-        // set the new label here
+        label.setText(newLabel);
     }
 
     public void toggleSelected() {

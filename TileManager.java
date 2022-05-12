@@ -44,7 +44,7 @@ public class TileManager extends JComponent {
         for (int i = 0; i < numRows; i++) {
             for (int j = 0; j < numCols; j++) {
                 grid[i][j] = new Tile(labels[i][j], topX + j * tileWidth, topY + i * tileHeight, tileWidth,
-                        tileHeight); // draws the tile on the grid (each of which has the label)
+                        tileHeight, frame); // draws the tile on the grid (each of which has the label)
                 grid[i][j].paintComponent(g);
                 // grid[i][j].repaint();
                 this.frame.add(grid[i][j]);
@@ -59,10 +59,11 @@ public class TileManager extends JComponent {
      * @param gridLabels
      */
     public void setLabels(String[][] gridLabels) {
-        repaint();
+        labels = gridLabels;
+        repaint(); // should redraw everything
     }
 
-    boolean validLoc(int r, int c) {
+    public boolean validLoc(int r, int c) {
         return r >= 0 && r < numRows && c >= 0 && c < numCols;
     }
 
@@ -83,6 +84,10 @@ public class TileManager extends JComponent {
 
         grid[curRow][curCol].toggleSelected();
         grid[newRow][newCol].toggleSelected();
+
+        grid[curRow][curCol].repaint();
+        grid[newRow][newCol].repaint();
+
         curRow = newRow;
         curCol = newCol;
 

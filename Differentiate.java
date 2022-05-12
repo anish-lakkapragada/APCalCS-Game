@@ -37,7 +37,12 @@ public class Differentiate {
                 continue;
             }
             String termOrSign = terms[i];
-            if (!termOrSign.equals("+") && !termOrSign.equals("-")) {
+            if (!(termOrSign.equals("+") || termOrSign.equals("-"))) {
+                if (termOrSign.equals("x") && termOrSign.length() == 1) {
+                    answer += "1 ";
+                    continue;
+                }
+
                 // if const
                 if (!termOrSign.contains("x")) {
                     // 4 + x
@@ -62,7 +67,7 @@ public class Differentiate {
                     int index = termOrSign.indexOf("^");
                     String coefficient = termOrSign.substring(0, index - 1);
 
-                    System.out.println(termOrSign.substring(index - 1, index + 2));
+                    // System.out.println(termOrSign.substring(index - 1, index + 2));
 
                     String derivativeTerm = derivatives.get(termOrSign.substring(index - 1, termOrSign.length()));
 
@@ -77,8 +82,8 @@ public class Differentiate {
                         preCoefficient = Integer.parseInt(numCoefficient); // stores the coefficient
                     }
 
-                    System.out.println("this is the pre coefficient :  " + preCoefficient);
-                    System.out.println("this is the derivative term: " + derivativeTerm);
+                    // System.out.println("this is the pre coefficient : " + preCoefficient);
+                    // System.out.println("this is the derivative term: " + derivativeTerm);
                     int derivCoefficient = 1;
                     if (!derivativeTerm.substring(0, 1).equals("x")) {
                         derivCoefficient = Integer.parseInt(derivativeTerm.substring(0, 1));
@@ -86,11 +91,11 @@ public class Differentiate {
 
                     String finalCoefficient = (derivCoefficient * preCoefficient) + "";
                     String finalExpression = finalCoefficient + derivativeTerm.substring(1);
-                    System.out.println(finalCoefficient);
-                    System.out.println(finalExpression);
+                    // System.out.println(finalCoefficient);
+                    // System.out.println(finalExpression);
                     answer += finalExpression + " ";
 
-                    System.out.println("weee " + answer);
+                    // System.out.println("weee " + answer);
                 }
 
                 // if it's cos(x) or sin(x)
@@ -105,11 +110,11 @@ public class Differentiate {
                      * fullDerivTerm = derivCoeff + derivTerm;
                      */
                     if (answer.length() > 0) {
-                        System.out.println("AAANNNSSS: " + answer + "/");
-                        System.out.println("correctline?");
+                        // System.out.println("AAANNNSSS: " + answer + "/");
+                        // System.out.println("correctline?");
                         char sign = answer.charAt(answer.length() - 2);
-                        System.out.println("correctline?");
-                        System.out.println("sign: " + sign);
+                        // System.out.println("correctline?");
+                        // System.out.println("sign: " + sign);
                         if (sign == '-' && derivTerm.charAt(0) == '-') {
 
                             answer = answer.substring(0, answer.length() - 2) + "+ " + derivTerm.substring(2) + " ";
@@ -121,11 +126,11 @@ public class Differentiate {
                             answer += derivTerm + " ";
                         }
                     } else {
-                        System.out.println("sinnnn to cosss?: " + derivTerm);
+                        // System.out.println("sinnnn to cosss?: " + derivTerm);
                         answer += derivTerm + " ";
 
                     }
-                    System.out.println("yo" + answer);
+                    // System.out.println("yo" + answer);
                 }
             }
 
@@ -143,8 +148,15 @@ public class Differentiate {
 
     public static void main(String[] args) {
         Differentiate diff = new Differentiate();
-        String answer = diff.differentiateString("5x^2 + cos(x)");
+        String answer = diff.differentiateString("x + sin(x)");
         System.out.println("ans: " + answer);
+
+        FunctionsList fl = new FunctionsList("functions.txt");
+        while (fl.hasQuestions()) {
+            String func = fl.nextFunction();
+            System.out.println("function: " + func);
+            System.out.println(diff.differentiateString(func));
+        }
     }
 
 }
