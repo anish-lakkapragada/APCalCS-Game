@@ -1,3 +1,6 @@
+/**
+ * Controls the current state of the board.
+ */
 public class BoardState {
     private int points;
     private static Differentiate d = new Differentiate();
@@ -21,18 +24,37 @@ public class BoardState {
             "2x^2 - cos(x)"
     };
 
+    /**
+     * Increases a player's points by a given amount
+     * @param num amount to increase point level by
+     */
     public void incrementPoints(int num) {
         points += num;
     }
 
+    /**
+     * Decreases a player's points by a given amount
+     * @param num amount to decrease point level by
+     */
     public void decrementPoints(int num) {
         points -= num;
     }
 
+    /**
+     * Returns a player's current point level
+     * @return point level
+     */
     public int getPoints() {
         return points;
     }
 
+    /**
+     * Returns a grid of derivatvies
+     * @param f function
+     * @param numDerivs number of derivatives
+     * @param numOptions number of options
+     * @return grid filled with derivatives
+     */
     public static String[][] getGrid(String f, int numDerivs, int numOptions) {
         // returns a grid of numDerivs by numOptions
         String function = f;
@@ -52,6 +74,10 @@ public class BoardState {
         return derivativeChoices;
     }
 
+    /**
+     * Returns a randomly generated function
+     * @return function
+     */
     private static String randomFunction() {
         String generatedFunc = "";
         if (Math.random() < 0.8) {
