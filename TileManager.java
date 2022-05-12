@@ -35,21 +35,31 @@ public class TileManager extends JComponent {
         this.topY = topY;
         labels = gridLabels;
         this.frame = frame;
+
+        curRow = -1;
+        curCol = -1;
+        grid = new Tile[numRows][numCols]; // create the grid
     }
 
     @Override
     public void paintComponent(Graphics g) {
-        System.out.println("tile manager paint component called");
-        grid = new Tile[numRows][numCols];
+        super.paintComponent(g);
         for (int i = 0; i < numRows; i++) {
             for (int j = 0; j < numCols; j++) {
-                grid[i][j] = new Tile(labels[i][j], topX + j * tileWidth, topY + i * tileHeight, tileWidth,
-                        tileHeight, frame); // draws the tile on the grid (each of which has the label)
+                if (grid[i][j] == null) {
+                    grid[i][j] = new Tile(labels[i][j], topX + j * tileWidth, topY + i * tileHeight, tileWidth - 1,
+                            tileHeight - 1, frame); // draws the tile on the grid (each of which has the label)
+                }
+
                 grid[i][j].paintComponent(g);
                 // grid[i][j].repaint();
                 this.frame.add(grid[i][j]);
             }
         }
+    }
+
+    public String getFunction(int r, int c) {
+        return grid[r][c].getText();
     }
 
     /**
@@ -60,7 +70,15 @@ public class TileManager extends JComponent {
      */
     public void setLabels(String[][] gridLabels) {
         labels = gridLabels;
-        repaint(); // should redraw everything
+        for (int i = 0; i < numRows; i++) {
+            for (int j = 0; j < numCols; j++) {
+                if (grid[i][j] != null) {
+                    grid[i][j].setLabel(gridLabels[i][j]);
+                    System.out.println(gridLabels[i][j].length());
+                }
+            }
+        }
+
     }
 
     public boolean validLoc(int r, int c) {
@@ -76,17 +94,22 @@ public class TileManager extends JComponent {
      * @param newRow
      * @param new    Col
      */
-    public int setLoc(int newRow, int newCol) {
+    public int setLoc(int newRow, int newCol, Graphics g) {
         if (!validLoc(newRow, newCol)) {
             System.out.println("nah");
             return 0;
         }
 
-        grid[curRow][curCol].toggleSelected();
-        grid[newRow][newCol].toggleSelected();
+        if (curRow >= 0 && curCol >= 0) {
+            grid[curRow][curCol].toggleSelected();
+            // grid[curRow][curCol].repaint();
+        }
 
-        grid[curRow][curCol].repaint();
-        grid[newRow][newCol].repaint();
+        grid[newRow][newCol].toggleSelected();
+        // grid[newRow][newCol].repaint();
+
+        frame.add(this);
+        frame.repaint();
 
         curRow = newRow;
         curCol = newCol;
@@ -110,5 +133,9 @@ public class TileManager extends JComponent {
      */
     public int curCol() {
         return curCol;
+    }
+
+    public Tile[][] getGrid() {
+        return grid;
     }
 }

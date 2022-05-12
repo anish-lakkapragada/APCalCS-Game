@@ -6,6 +6,8 @@
 import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.*;
+import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 public class Tile
         extends JComponent {
@@ -15,6 +17,7 @@ public class Tile
     private Line2D[] lines;
     private JLabel label;
     private JFrame frame;
+    private Graphics g;
 
     private final Color selectedColor = Color.BLUE;
     private final Color defaultColor = Color.BLACK;
@@ -33,7 +36,10 @@ public class Tile
 
     @Override
     public void paintComponent(Graphics g) {
+        this.g = g;
         // System.out.println("tile paint component is called baby");
+
+        System.out.println("tile copmonent");
 
         super.paintComponent(g);
 
@@ -48,19 +54,27 @@ public class Tile
         g2.drawLine(topLeftX + width, topLeftY, topLeftX + width, topLeftY + height);
 
         addLabel(currentColor);
+
+        System.out.println(topLeftX + " " + topLeftY);
     }
 
     public void addLabel(Color color) {
         label.setBounds((int) (topLeftX + 0.1 * width), (int) (topLeftY + 0.1 * height), (int) (width * 0.9), height);
         frame.add(label);
-        System.out.println(label.getText());
+
     }
 
     public void setLabel(String newLabel) {
         label.setText(newLabel);
+        frame.add(label);
+    }
+
+    public String getText() {
+        return label.getText();
     }
 
     public void toggleSelected() {
+        System.out.println(currentColor);
         if (currentColor.equals(selectedColor)) {
             currentColor = defaultColor;
         }
@@ -69,6 +83,9 @@ public class Tile
             System.out.println("ahhahah");
             currentColor = selectedColor;
         }
+        System.out.println(currentColor);
+
+        paintComponent(this.g);
     }
 
 }

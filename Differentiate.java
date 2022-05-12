@@ -21,10 +21,12 @@ public class Differentiate {
             derivatives.put("x^" + i, i + "x^" + (i - 1));// x^3, 3x^2
         }
     }
+
     /**
      * @param function a math function given in string form.
-     *      Preconditions: A polynomial +/- sin or cos function. 
-     *          Coefficients included for polynomials but not for sin and cos.
+     *                 Preconditions: A polynomial +/- sin or cos function.
+     *                 Coefficients included for polynomials but not for sin and
+     *                 cos.
      *
      * @return the derivative of the function in string form.
      */
@@ -147,6 +149,18 @@ public class Differentiate {
         }
 
         return answer;
+
+    }
+
+    public String[] correctAnswers(String function, int numOrders) {
+        String[] derivatives = new String[numOrders];
+        String temp = function;
+        for (int i = 0; i < numOrders; i++) {
+            temp = differentiateString(temp);
+            derivatives[i] = temp;
+        }
+
+        return derivatives;
 
     }
 
