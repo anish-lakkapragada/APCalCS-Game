@@ -7,42 +7,43 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.*;
 
-public class Tile {
+public class Tile
+        extends JComponent {
     private int topLeftX, topLeftY;
     private int width, height;
     private Color currentColor = null;
-    private Graphics g;
     private Line2D[] lines;
     private JLabel label;
 
     private final Color selectedColor = Color.BLUE;
     private final Color defaultColor = Color.BLACK;
 
-    public Tile(String lbl, int tX, int tY, int width, int height, Graphics g) {
+    public Tile(String lbl, int tX, int tY, int width, int height) {
         topLeftX = tX;
         topLeftY = tY;
         this.label = new JLabel(lbl);
         this.width = width;
         this.height = height;
-        this.g = g;
         lines = new Line2D[4];
 
-        // draw the tile and label
+        currentColor = defaultColor;
     }
 
-    private void drawTile(Color color) {
+    @Override
+    public void paintComponent(Graphics g) {
+        System.out.println("tile paint component is called baby");
+
+        super.paintComponent(g);
+
         Graphics2D g2 = (Graphics2D) g;
-        lines[0] = new Line2D.Float(topLeftX, topLeftY, topLeftX + width, topLeftY);
-        lines[1] = new Line2D.Float(topLeftX, topLeftY + height, topLeftX + width, topLeftY + height);
-        lines[2] = new Line2D.Float(topLeftX, topLeftY, topLeftX, topLeftY + height);
-        lines[3] = new Line2D.Float(topLeftX + width, topLeftY, topLeftX + width, topLeftY + height);
 
-        g.setColor(color);
-        currentColor = color;
+        g.setColor(currentColor);
+        g2.setColor(currentColor);
 
-        for (int i = 0; i < lines.length; i++) {
-            g2.draw(lines[i]);
-        }
+        g2.drawLine(topLeftX, topLeftY, topLeftX + width, topLeftY);
+        g2.drawLine(topLeftX, topLeftY + height, topLeftX + width, topLeftY + height);
+        g2.drawLine(topLeftX, topLeftY, topLeftX, topLeftY + height);
+        g2.drawLine(topLeftX + width, topLeftY, topLeftX + width, topLeftY + height);
     }
 
     public void drawLabel(Color color) {
@@ -54,14 +55,12 @@ public class Tile {
     }
 
     public void toggleSelected() {
-        lines = new Line2D[4]; // reset everything
         if (currentColor.equals(selectedColor)) {
-            drawTile(defaultColor);
             currentColor = defaultColor;
         }
 
         else {
-            drawTile(selectedColor);
+            System.out.println("ahhahah");
             currentColor = selectedColor;
         }
     }

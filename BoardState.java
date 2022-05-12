@@ -1,5 +1,6 @@
 public class BoardState {
     private int points;
+    private static Differentiate d = new Differentiate();
     private String[] randomExpressions = {
             "3x^2 + cos(x)",
             "6x - sin(x)",
@@ -32,11 +33,12 @@ public class BoardState {
         return points;
     }
 
-    public static String[][] getGrid(String function, int numDerivs, int numOptions) {
+    public static String[][] getGrid(String f, int numDerivs, int numOptions) {
         // returns a grid of numDerivs by numOptions
+        String function = f;
         String[][] derivativeChoices = new String[numDerivs][numOptions];
         for (int i = numDerivs - 1; i >= 0; i--) {
-            String correctDerivative = FunctionsList.differentiate(function);
+            String correctDerivative = d.differentiateString(function);
             String[] temp = new String[numOptions];
             for (int j = 0; j < numOptions; j++) {
                 temp[j] = randomFunction();
@@ -44,6 +46,7 @@ public class BoardState {
 
             temp[(int) (Math.random() * numOptions)] = correctDerivative;
             derivativeChoices[i] = temp;
+            function = correctDerivative; // set it to the derivative
         }
 
         return derivativeChoices;

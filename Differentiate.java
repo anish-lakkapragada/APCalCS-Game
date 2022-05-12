@@ -64,7 +64,7 @@ public class Differentiate {
 
                     System.out.println(termOrSign.substring(index - 1, index + 2));
 
-                    String derivativeTerm = derivatives.get(termOrSign.substring(index - 1, index + 2));
+                    String derivativeTerm = derivatives.get(termOrSign.substring(index - 1, termOrSign.length()));
 
                     // System.out.print("Derivative term: " + derivativeTerm);
 
@@ -143,7 +143,7 @@ public class Differentiate {
 
     public static void main(String[] args) {
         Differentiate diff = new Differentiate();
-        String answer = diff.differentiateString("5x^2 cos(x)");
+        String answer = diff.differentiateString("5x^2 + cos(x)");
         System.out.println("ans: " + answer);
     }
 

@@ -4,14 +4,16 @@
  */
 
 import java.awt.*;
+import javax.swing.*;
 
-public class TileManager {
+public class TileManager extends JComponent {
     private Tile[][] grid;
     private int numRows, numCols;
     private int curRow, curCol;
     private int tileWidth, tileHeight;
     private int topX, topY; // starting X and Y coordinates of the entire grid
-    private Graphics g;
+    private String[][] labels;
+    private JFrame frame;
 
     /**
      * Constructor for the TileManager class to manage the tiles.
@@ -22,34 +24,45 @@ public class TileManager {
      * @param tileHeight the height of each column in this grid
      * @param topX       the top-left x-coordinate for the first tile
      * @param topY       the top-left y-coordinate for the first tile
-     * @param g          the graphics object
      */
-    public TileManager(int numRows, int numCols, int tileWidth, int tileHeight, int topX, int topY, Graphics g) {
+    public TileManager(int numRows, int numCols, int tileWidth, int tileHeight, int topX, int topY,
+            String[][] gridLabels, JFrame frame) {
         this.numRows = numRows;
         this.numCols = numCols;
         this.tileWidth = tileWidth;
         this.tileHeight = tileHeight;
         this.topX = topX;
         this.topY = topY;
-        this.g = g;
+        labels = gridLabels;
+        this.frame = frame;
     }
 
-    /**
-     * Draws the tiles (with the specified list of labels) onto the grid.
-     * 
-     * @param gridLabels labels (same dimensions as the grid itself)
-     */
-    public void drawGrid(String[][] gridLabels) {
+    @Override
+    public void paintComponent(Graphics g) {
+        System.out.println("tile manager paint component called");
         grid = new Tile[numRows][numCols];
         for (int i = 0; i < numRows; i++) {
             for (int j = 0; j < numCols; j++) {
-                grid[i][j] = new Tile(gridLabels[i][j], topX + i * tileWidth, topY + i * tileHeight, tileWidth,
-                        tileHeight, g); // draws the tile on the grid (each of which has the label)
+                grid[i][j] = new Tile(labels[i][j], topX + j * tileWidth, topY + i * tileHeight, tileWidth,
+                        tileHeight); // draws the tile on the grid (each of which has the label)
+                grid[i][j].paintComponent(g);
+                // grid[i][j].repaint();
+                this.frame.add(grid[i][j]);
             }
         }
     }
 
-    private boolean validLoc(int r, int c) {
+    /**
+     * Reset the labels with <code> gridLabels </code>
+     * and redraw the grid in the same place.
+     * 
+     * @param gridLabels
+     */
+    public void setLabels(String[][] gridLabels) {
+        repaint();
+    }
+
+    boolean validLoc(int r, int c) {
         return r >= 0 && r < numRows && c >= 0 && c < numCols;
     }
 
@@ -64,6 +77,7 @@ public class TileManager {
      */
     public int setLoc(int newRow, int newCol) {
         if (!validLoc(newRow, newCol)) {
+            System.out.println("nah");
             return 0;
         }
 
@@ -73,10 +87,6 @@ public class TileManager {
         curCol = newCol;
 
         return 1;
-    }
-
-    public void setLabels(String[][] gridLabels) {
-        // go through each of the tiles and set their label.
     }
 
     /**

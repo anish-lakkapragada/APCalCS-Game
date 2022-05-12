@@ -19,8 +19,8 @@ public class FunctionsList {
             return;
         }
 
-        while (scan.hasNext()) {
-            token1 = scan.next();
+        while (scan.hasNextLine()) {
+            token1 = scan.nextLine();
             questionsQueue.add(token1);
         }
         scan.close();
