@@ -21,7 +21,13 @@ public class Differentiate {
             derivatives.put("x^" + i, i + "x^" + (i - 1));// x^3, 3x^2
         }
     }
-
+    /**
+     * @param function a math function given in string form.
+     *      Preconditions: A polynomial +/- sin or cos function. 
+     *          Coefficients included for polynomials but not for sin and cos.
+     *
+     * @return the derivative of the function in string form.
+     */
     public String differentiateString(String function) {
 
         // "3x^2 + cos(x)" => ["3x^2", "+", "cos(x)"]
