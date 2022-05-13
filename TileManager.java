@@ -4,6 +4,8 @@
  */
 
 import java.awt.*;
+import java.util.concurrent.TimeUnit;
+
 import javax.swing.*;
 
 public class TileManager extends JComponent {
@@ -43,6 +45,7 @@ public class TileManager extends JComponent {
 
     @Override
     public void paintComponent(Graphics g) {
+
         super.paintComponent(g);
         for (int i = 0; i < numRows; i++) {
             for (int j = 0; j < numCols; j++) {
@@ -51,9 +54,9 @@ public class TileManager extends JComponent {
                             tileHeight - 1, frame); // draws the tile on the grid (each of which has the label)
                 }
 
+                frame.add(grid[i][j]);
                 grid[i][j].paintComponent(g);
-                // grid[i][j].repaint();
-                this.frame.add(grid[i][j]);
+
             }
         }
     }
@@ -74,7 +77,6 @@ public class TileManager extends JComponent {
             for (int j = 0; j < numCols; j++) {
                 if (grid[i][j] != null) {
                     grid[i][j].setLabel(gridLabels[i][j]);
-                    System.out.println(gridLabels[i][j].length());
                 }
             }
         }
@@ -115,16 +117,6 @@ public class TileManager extends JComponent {
         curCol = newCol;
 
         return 1;
-    }
-
-    public void revalidateText() {
-        for (int i = 0; i < grid.length; i++) {
-            for (int j = 0; j < grid[i].length; j++) {
-                String temp = grid[i][j].getText();
-                grid[i][j].setLabel("");
-                grid[i][j].setLabel(temp);
-            }
-        }
     }
 
     /**

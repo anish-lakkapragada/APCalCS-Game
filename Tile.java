@@ -25,7 +25,11 @@ public class Tile
     public Tile(String lbl, int tX, int tY, int width, int height, JFrame frame) {
         topLeftX = tX;
         topLeftY = tY;
-        this.label = new JLabel(lbl);
+        label = new JLabel(lbl);
+
+        // adding the label right here
+        frame.add(label);
+
         this.width = width;
         this.height = height;
         this.frame = frame;
@@ -37,10 +41,8 @@ public class Tile
     @Override
     public void paintComponent(Graphics g) {
         this.g = g;
-        // System.out.println("tile paint component is called baby");
 
-        System.out.println("tile copmonent");
-
+        System.out.println("call to paint component in Tile.java");
         super.paintComponent(g);
 
         Graphics2D g2 = (Graphics2D) g;
@@ -55,19 +57,16 @@ public class Tile
 
         addLabel(currentColor);
 
-        System.out.println(topLeftX + " " + topLeftY);
     }
 
     public void addLabel(Color color) {
+        label.setForeground(color);
         label.setBounds((int) (topLeftX + 0.1 * width), (int) (topLeftY + 0.1 * height), (int) (width * 0.8), height);
-        System.out.println("label textr: " + label.getText());
-        frame.add(label);
 
     }
 
     public void setLabel(String newLabel) {
         label.setText(newLabel);
-        frame.add(label);
     }
 
     public String getText() {
@@ -84,9 +83,9 @@ public class Tile
             System.out.println("ahhahah");
             currentColor = selectedColor;
         }
-        System.out.println(currentColor);
 
-        paintComponent(this.g);
+        repaint();
+        label.setForeground(currentColor);
     }
 
 }

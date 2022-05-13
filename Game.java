@@ -39,7 +39,7 @@ public class Game extends JFrame implements KeyListener {
         // add(panel);
         // panel.setLayout(null);
 
-        setSize(2000, 800);
+        setSize(1200, 800);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         functionLabel = new JLabel("", SwingConstants.CENTER);
@@ -57,11 +57,9 @@ public class Game extends JFrame implements KeyListener {
         curRow = numRows - 1;
         tm = new TileManager(numRows, numCols, tileWidth, tileHeight, 75, 200, new String[5][5], this);
         add(tm);
-        tm.revalidate();
-
         setVisible(true);
-
         setupGame();
+
     }
 
     private void setupGame() {
