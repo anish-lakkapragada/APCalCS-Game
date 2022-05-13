@@ -59,7 +59,8 @@ public class Tile
     }
 
     public void addLabel(Color color) {
-        label.setBounds((int) (topLeftX + 0.1 * width), (int) (topLeftY + 0.1 * height), (int) (width * 0.9), height);
+        label.setBounds((int) (topLeftX + 0.1 * width), (int) (topLeftY + 0.1 * height), (int) (width * 0.8), height);
+        System.out.println("label textr: " + label.getText());
         frame.add(label);
 
     }

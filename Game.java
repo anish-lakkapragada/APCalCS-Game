@@ -33,11 +33,14 @@ public class Game extends JFrame implements KeyListener {
         correctDerivatives = new String[numRows];
 
         // setup GUI
-        panel = new JPanel();
-        setSize(1200, 800);
+        // panel = new JPanel();
+        // setSize(1200, 800);
+        // setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        // add(panel);
+        // panel.setLayout(null);
+
+        setSize(2000, 800);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        add(panel);
-        panel.setLayout(null);
 
         functionLabel = new JLabel("", SwingConstants.CENTER);
         // functionLabel.setHorizontalAlignment(JLabel.CENTER);
@@ -46,8 +49,16 @@ public class Game extends JFrame implements KeyListener {
         // panel.add(functionLabel);
         add(functionLabel);
 
-        tm = new TileManager(numRows, numCols, tileWidth, tileHeight, 100, 200, new String[5][5], this);
+        // add the points label
+        pointsLabel = new JLabel("Points " + 0);
+        pointsLabel.setBounds(1000, 20, 100, 25);
+        add(pointsLabel);
+
+        curRow = numRows - 1;
+        tm = new TileManager(numRows, numCols, tileWidth, tileHeight, 75, 200, new String[5][5], this);
         add(tm);
+        tm.revalidate();
+
         setVisible(true);
 
         setupGame();
@@ -57,11 +68,7 @@ public class Game extends JFrame implements KeyListener {
         boardState = new BoardState();
         fl = new FunctionsList("functions.txt");
         updateQuestion();
-        curRow = numRows - 1; // started from the bottom
-        tm.setLoc(curRow, (int) (Math.random() * numCols), getGraphics());
-
-        // add the points label
-        pointsLabel = new JLabel("Points " + boardState.getPoints());
+        tm.setLoc(curRow, (int) (Math.random() * numCols), getGraphics()); // select
     }
 
     private void updateQuestion() {
@@ -82,12 +89,14 @@ public class Game extends JFrame implements KeyListener {
         String answeredDerivative = tm.getFunction(r, c);
         String correctDerivative = correctDerivatives[numRows - r - 1];
         if (correctDerivative.equals(answeredDerivative)) {
+            boardState.incrementPoints(3);
+            pointsLabel.setText("Points: " + boardState.getPoints());
         }
     }
 
     public void moveTo(int newRow, int newCol) {
         if (Math.abs(newCol - tm.curCol()) == 0) {
-            // evaluatePoints(tm.curRow(), tm.curCol());
+            evaluatePoints(tm.curRow(), tm.curCol());
             tm.setLoc(newRow, newCol, getGraphics());
             return;
         }

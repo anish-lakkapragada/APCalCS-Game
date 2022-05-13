@@ -117,6 +117,16 @@ public class TileManager extends JComponent {
         return 1;
     }
 
+    public void revalidateText() {
+        for (int i = 0; i < grid.length; i++) {
+            for (int j = 0; j < grid[i].length; j++) {
+                String temp = grid[i][j].getText();
+                grid[i][j].setLabel("");
+                grid[i][j].setLabel(temp);
+            }
+        }
+    }
+
     /**
      * Get the current row selected in the tile grid.
      * 
