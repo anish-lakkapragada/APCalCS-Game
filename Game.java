@@ -22,7 +22,7 @@ public class Game extends JFrame implements KeyListener {
     private String[] correctDerivatives;
     private Differentiate d = new Differentiate();
 
-    private static final int numRows = 5;
+    private static final int numRows = 10;
     private static final int numCols = 5;
     private static final int tileWidth = 200;
     private static final int tileHeight = 50;
@@ -41,11 +41,12 @@ public class Game extends JFrame implements KeyListener {
 
         setSize(1200, 800);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setTitle("Derivatiles");
 
         functionLabel = new JLabel("", SwingConstants.CENTER);
         // functionLabel.setHorizontalAlignment(JLabel.CENTER);
-        functionLabel.setBounds(500, 20, 200, 25);
-        functionLabel.setFont(new Font("Calibri", Font.BOLD, 14));
+        functionLabel.setBounds(350, 30, 500, 25);
+        functionLabel.setFont(new Font("Calibri", Font.ITALIC, 30));
         // panel.add(functionLabel);
         add(functionLabel);
 
@@ -54,8 +55,16 @@ public class Game extends JFrame implements KeyListener {
         pointsLabel.setBounds(1000, 20, 100, 25);
         add(pointsLabel);
 
+        // add the numCols options
+        for (int colNum = 1; colNum <= numCols; colNum++) {
+            JLabel colLabel = new JLabel(colNum + "");
+            colLabel.setBounds(175 + tileWidth * (colNum - 1), 160, 25, 25);
+            colLabel.setFont(new Font("Calibri", Font.BOLD, 17));
+            add(colLabel);
+        }
+
         curRow = numRows - 1;
-        tm = new TileManager(numRows, numCols, tileWidth, tileHeight, 75, 200, new String[5][5], this);
+        tm = new TileManager(numRows, numCols, tileWidth, tileHeight, 75, 200, new String[numRows][numCols], this);
         add(tm);
         setVisible(true);
         setupGame();
@@ -66,21 +75,20 @@ public class Game extends JFrame implements KeyListener {
         boardState = new BoardState();
         fl = new FunctionsList("functions.txt");
         updateQuestion();
-        tm.setLoc(curRow, (int) (Math.random() * numCols), getGraphics()); // select
     }
 
     private void updateQuestion() {
+        curRow = numRows - 1;
         if (fl.hasQuestions()) {
             String newQuestion = fl.nextFunction();
             correctDerivatives = d.correctAnswers(newQuestion, numRows);
             String[][] gridLabels = BoardState.getGrid(newQuestion, numRows, numCols);
             tm.setLabels(gridLabels);
-            functionLabel.setText(newQuestion);
+            functionLabel.setText("f(x) = " + newQuestion);
         }
 
-        else {
-            // TODO implement this
-        }
+        tm.setLoc(curRow, (int) (Math.random() * numCols), getGraphics()); // select
+
     }
 
     private void evaluatePoints(int r, int c) {
@@ -90,10 +98,19 @@ public class Game extends JFrame implements KeyListener {
             boardState.incrementPoints(3);
             pointsLabel.setText("Points: " + boardState.getPoints());
         }
+
+        System.out.println("num rows: " + numRows);
+        System.out.println("passed row: " + r);
     }
 
     public void moveTo(int newRow, int newCol) {
         if (Math.abs(newCol - tm.curCol()) == 0) {
+            System.out.println("this is the new row: " + newRow);
+
+            if (newRow < 0) {
+                updateQuestion(); // they kinda done now
+            }
+
             evaluatePoints(tm.curRow(), tm.curCol());
             tm.setLoc(newRow, newCol, getGraphics());
             return;
@@ -111,6 +128,11 @@ public class Game extends JFrame implements KeyListener {
         int keyCode = e.getKeyCode();
         System.out.println("called");
         if (tm == null) {
+            return;
+        }
+
+        if (keyCode >= 49 && keyCode <= 48 + numCols) {
+            moveTo(tm.curRow(), (keyCode - 48) - 1);
             return;
         }
 

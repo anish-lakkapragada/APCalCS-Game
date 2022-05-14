@@ -42,7 +42,6 @@ public class Tile
     public void paintComponent(Graphics g) {
         this.g = g;
 
-        System.out.println("call to paint component in Tile.java");
         super.paintComponent(g);
 
         Graphics2D g2 = (Graphics2D) g;
