@@ -1,6 +1,8 @@
 
 /**
  * Class to create a tile
+ * 
+ * Documented problem. 
  */
 
 import javax.swing.*;

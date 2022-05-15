@@ -11,6 +11,7 @@ import java.util.concurrent.TimeUnit;
  */
 public class Game extends JFrame implements KeyListener {
 
+    private boolean gameStarted = false;
     private JLabel functionLabel; // labels the current function
     private JPanel panel;
     private Graphics g;
@@ -21,28 +22,29 @@ public class Game extends JFrame implements KeyListener {
     private int curRow = 0;
     private String[] correctDerivatives;
     private Differentiate d = new Differentiate();
+    private int numRows;
 
-    private static final int numRows = 10;
     private static final int numCols = 5;
     private static final int tileWidth = 200;
     private static final int tileHeight = 50;
 
     public Game() {
 
-        addKeyListener(this);
         correctDerivatives = new String[numRows];
-
-        // setup GUI
-        // panel = new JPanel();
-        // setSize(1200, 800);
-        // setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        // add(panel);
-        // panel.setLayout(null);
+        setFocusable(true);
+        addKeyListener(this); // WHY IS THE KEY LISTENER IGNORED
 
         setSize(1200, 800);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setTitle("Derivatiles");
+        setResizable(false);
 
+        WelcomeScreen welcomeScreen = new WelcomeScreen(this);
+    }
+
+    // after all the users have been taken care of
+    public void startGame(int numOrders) {
+        this.numRows = numOrders;
         functionLabel = new JLabel("", SwingConstants.CENTER);
         // functionLabel.setHorizontalAlignment(JLabel.CENTER);
         functionLabel.setBounds(350, 30, 500, 25);
@@ -65,10 +67,12 @@ public class Game extends JFrame implements KeyListener {
 
         curRow = numRows - 1;
         tm = new TileManager(numRows, numCols, tileWidth, tileHeight, 75, 200, new String[numRows][numCols], this);
+        tm.paintComponent(getGraphics());
         add(tm);
-        setVisible(true);
+
         setupGame();
 
+        setVisible(true);
     }
 
     private void setupGame() {
@@ -88,7 +92,6 @@ public class Game extends JFrame implements KeyListener {
         }
 
         tm.setLoc(curRow, (int) (Math.random() * numCols), getGraphics()); // select
-
     }
 
     private void evaluatePoints(int r, int c) {

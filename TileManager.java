@@ -41,11 +41,12 @@ public class TileManager extends JComponent {
         curRow = -1;
         curCol = -1;
         grid = new Tile[numRows][numCols]; // create the grid
+
     }
 
     @Override
     public void paintComponent(Graphics g) {
-
+        System.out.println("tile manager paint called");
         super.paintComponent(g);
         for (int i = 0; i < numRows; i++) {
             for (int j = 0; j < numCols; j++) {
@@ -54,7 +55,7 @@ public class TileManager extends JComponent {
                             tileHeight - 1, frame); // draws the tile on the grid (each of which has the label)
                 }
 
-                frame.add(grid[i][j]);
+                // frame.add(grid[i][j]);
                 grid[i][j].paintComponent(g);
 
             }
@@ -110,8 +111,7 @@ public class TileManager extends JComponent {
         grid[newRow][newCol].toggleSelected();
         // grid[newRow][newCol].repaint();
 
-        frame.add(this);
-        frame.repaint();
+        repaint();
 
         curRow = newRow;
         curCol = newCol;
