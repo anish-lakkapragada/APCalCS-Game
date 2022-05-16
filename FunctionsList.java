@@ -2,10 +2,18 @@ import java.io.File;
 import java.util.*;
 import java.io.*;
 
+/**
+ * Reads "base functions" for users to differentiate,
+ * taken from the <code>Functions.txt</code> file.
+ */
 public class FunctionsList {
     // private String fileName;
     public Queue<String> questionsQueue = new LinkedList<String>();
 
+    /**
+     * Constructor method.
+     * @param fName file with functions to put into the queue
+     */
     public FunctionsList(String fName) {
         String token1 = "";
         Scanner scan;
@@ -26,6 +34,11 @@ public class FunctionsList {
         scan.close();
     }
 
+    /**
+     * Returns true if <code>questionsQueue</code> is not empty,
+     * returns false otherwise.
+     * @return true if NOT empty
+     */
     public boolean hasQuestions() {
         return !questionsQueue.isEmpty();
     }
