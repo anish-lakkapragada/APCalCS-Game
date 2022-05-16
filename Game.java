@@ -53,8 +53,9 @@ public class Game extends JFrame implements KeyListener {
         add(functionLabel);
 
         // add the points label
-        pointsLabel = new JLabel("Points " + 0);
-        pointsLabel.setBounds(1000, 20, 100, 25);
+        pointsLabel = new JLabel("Points: " + 0);
+        pointsLabel.setFont(new Font("Calibri", Font.BOLD, 20));
+        pointsLabel.setBounds(1000, 15, 100, 25);
         add(pointsLabel);
 
         // add the numCols options
