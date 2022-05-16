@@ -1,12 +1,10 @@
-
-/**
- * Welcome screen.
- */
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
+/**
+ * Implements a welcome screen to the game.
+ */
 public class WelcomeScreen implements ActionListener {
     private Game gameFrame;
     private JLabel gameLabel;
