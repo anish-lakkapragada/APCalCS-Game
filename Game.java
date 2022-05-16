@@ -26,7 +26,7 @@ public class Game extends JFrame implements KeyListener {
 
     private static final int numCols = 5;
     private static final int tileWidth = 200;
-    private static final int tileHeight = 50;
+    private static final int tileHeight = 75;
 
     public Game() {
 
