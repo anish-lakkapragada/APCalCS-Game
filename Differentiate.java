@@ -30,6 +30,7 @@ public class Differentiate {
      *
      * @return the derivative of the function in string form.
      */
+
     public String differentiateString(String function) {
 
         // "3x^2 + cos(x)" => ["3x^2", "+", "cos(x)"]
@@ -38,6 +39,12 @@ public class Differentiate {
         String answer = "";
         boolean uselessAndOnlyForConstAtBeginningCase = false;
         for (int i = 0; i < terms.length; i++) {
+            // CORNER CASE: ONLY A CONSTANT
+            if (terms.length == 1 && terms[i].indexOf("x") < 0) {
+                answer = "0";
+                break; 
+            }
+            
             if (uselessAndOnlyForConstAtBeginningCase) {
                 uselessAndOnlyForConstAtBeginningCase = false;
                 continue;
@@ -152,6 +159,12 @@ public class Differentiate {
 
     }
 
+    /**
+     * 
+     * @param function
+     * @param numOrders
+     * @return
+     */
     public String[] correctAnswers(String function, int numOrders) {
         String[] derivatives = new String[numOrders];
         String temp = function;
@@ -166,15 +179,21 @@ public class Differentiate {
 
     public static void main(String[] args) {
         Differentiate diff = new Differentiate();
-        String answer = diff.differentiateString("x + sin(x)");
-        System.out.println("ans: " + answer);
+        // String answer = diff.differentiateString("x + sin(x)");
+        // System.out.println("ans: " + answer);
 
         FunctionsList fl = new FunctionsList("functions.txt");
         while (fl.hasQuestions()) {
-            String func = fl.nextFunction();
-            System.out.println("function: " + func);
-            System.out.println(diff.differentiateString(func));
+            int i =0;
+            String function = fl.nextFunction();  
+            while (i < 10) {
+                function = diff.differentiateString(function);
+                System.out.println(function); 
+                i++; 
+            }
         }
+        
+        //System.out.println(diff.differentiateString("69"));
     }
 
 }
