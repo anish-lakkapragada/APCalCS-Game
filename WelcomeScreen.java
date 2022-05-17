@@ -32,7 +32,7 @@ public class WelcomeScreen implements ActionListener {
         gameFrame.add(numDerivLabel);
 
         startButton = new JButton("Start Game!");
-        startButton.setBounds(500, 450, 200, 50);
+        startButton.setBounds(500, 550, 200, 50);
         startButton.addActionListener(this);
         gameFrame.add(startButton);
 

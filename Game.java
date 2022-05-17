@@ -34,7 +34,7 @@ public class Game extends JFrame implements KeyListener {
         setFocusable(true);
         addKeyListener(this); // WHY IS THE KEY LISTENER IGNORED
 
-        setSize(1200, 800);
+        setSize(1200, 1000);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setTitle("Derivatiles");
         setResizable(false);
@@ -55,7 +55,7 @@ public class Game extends JFrame implements KeyListener {
         // add the points label
         pointsLabel = new JLabel("Points: " + 0);
         pointsLabel.setFont(new Font("Calibri", Font.BOLD, 20));
-        pointsLabel.setBounds(1000, 15, 100, 25);
+        pointsLabel.setBounds(990, 15, 125, 25);
         add(pointsLabel);
 
         // add the numCols options
@@ -67,21 +67,26 @@ public class Game extends JFrame implements KeyListener {
         }
 
         for (int rowNum = 1; rowNum <= numRows; rowNum++) {
-            String label = "f";
-            for (int i = 1; i <= rowNum; i++) {
+            String label = "<html>f";
+            if (rowNum == 1) {
                 label += "'";
+            } else if (rowNum == 2) {
+                label += "''";
+            } else {
+                label += "<sup>(" + rowNum + ")</sup>";
             }
-            label += "(x)"; // create the label here
+
+            label += "(x)</html>"; // create the label here
 
             JLabel derivLabel = new JLabel(label);
             int theBottom = 125 + tileHeight * numRows;
-            derivLabel.setBounds(25, theBottom - (rowNum - 1) * tileHeight, 50, 75);
+            derivLabel.setBounds(25, theBottom - (rowNum - 1) * tileHeight, 75, 75);
             derivLabel.setFont(new Font("Calibri", Font.BOLD, 15));
             add(derivLabel);
         }
 
         curRow = numRows - 1;
-        tm = new TileManager(numRows, numCols, tileWidth, tileHeight, 75, 200, new String[numRows][numCols], this);
+        tm = new TileManager(numRows, numCols, tileWidth, tileHeight, 125, 200, new String[numRows][numCols], this);
         tm.paintComponent(getGraphics());
         add(tm);
 

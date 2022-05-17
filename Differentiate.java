@@ -42,9 +42,9 @@ public class Differentiate {
             // CORNER CASE: ONLY A CONSTANT
             if (terms.length == 1 && terms[i].indexOf("x") < 0) {
                 answer = "0";
-                break; 
+                break;
             }
-            
+
             if (uselessAndOnlyForConstAtBeginningCase) {
                 uselessAndOnlyForConstAtBeginningCase = false;
                 continue;
@@ -159,6 +159,22 @@ public class Differentiate {
 
     }
 
+    public static String formatSuscript(String function) {
+        // 3x^3 + 6x^2
+        String newFunction = "<html>";
+        int carrotIndex = function.indexOf("^");
+        if (carrotIndex < 0) {
+            return function; // no exponents;
+        }
+
+        newFunction += function.substring(0, carrotIndex);
+        newFunction += "<sup>";
+        newFunction += function.substring(carrotIndex + 1, carrotIndex + 2);
+        newFunction += "</sup>" + function.substring(carrotIndex + 2, function.length());
+
+        return null;
+    }
+
     /**
      * 
      * @param function
@@ -184,16 +200,16 @@ public class Differentiate {
 
         FunctionsList fl = new FunctionsList("functions.txt");
         while (fl.hasQuestions()) {
-            int i =0;
-            String function = fl.nextFunction();  
+            int i = 0;
+            String function = fl.nextFunction();
             while (i < 10) {
                 function = diff.differentiateString(function);
-                System.out.println(function); 
-                i++; 
+                System.out.println(function);
+                i++;
             }
         }
-        
-        //System.out.println(diff.differentiateString("69"));
+
+        // System.out.println(diff.differentiateString("69"));
     }
 
 }
