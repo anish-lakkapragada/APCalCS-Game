@@ -66,6 +66,20 @@ public class Game extends JFrame implements KeyListener {
             add(colLabel);
         }
 
+        for (int rowNum = 1; rowNum <= numRows; rowNum++) {
+            String label = "f";
+            for (int i = 1; i <= rowNum; i++) {
+                label += "'";
+            }
+            label += "(x)"; // create the label here
+
+            JLabel derivLabel = new JLabel(label);
+            int theBottom = 125 + tileHeight * numRows;
+            derivLabel.setBounds(25, theBottom - (rowNum - 1) * tileHeight, 50, 75);
+            derivLabel.setFont(new Font("Calibri", Font.BOLD, 15));
+            add(derivLabel);
+        }
+
         curRow = numRows - 1;
         tm = new TileManager(numRows, numCols, tileWidth, tileHeight, 75, 200, new String[numRows][numCols], this);
         tm.paintComponent(getGraphics());
