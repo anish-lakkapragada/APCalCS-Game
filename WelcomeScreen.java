@@ -20,6 +20,7 @@ public class WelcomeScreen implements ActionListener {
     public WelcomeScreen(Game gF) {
 
         gameFrame = gF;
+        gameFrame.setSize(1200, 800);
 
         gameLabel = new JLabel("Derivatiles Game", SwingConstants.CENTER);
         gameLabel.setBounds(350, 50, 500, 100);

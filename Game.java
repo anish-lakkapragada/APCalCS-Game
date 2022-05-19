@@ -4,17 +4,18 @@ import java.awt.event.KeyEvent;
 import java.awt.*;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
+import java.awt.*;
+import java.awt.event.*;
 
 /**
  * https://www.youtube.com/watch?v=4PfDdJ8GFHI
  * 
  */
-public class Game extends JFrame implements KeyListener {
+public class Game extends JFrame implements KeyListener, ActionListener {
 
-    private boolean gameStarted = false;
-    private JLabel functionLabel; // labels the current function
-    private JPanel panel;
-    private Graphics g;
+    private JLabel functionLabel; // labels the current function.
+    private JButton backButton; // goes back
+    private WelcomeScreen welcomeScreen;
     private JLabel pointsLabel; // stores the points
     private BoardState boardState;
     private FunctionsList fl;
@@ -34,16 +35,18 @@ public class Game extends JFrame implements KeyListener {
         setFocusable(true);
         addKeyListener(this); // WHY IS THE KEY LISTENER IGNORED
 
-        setSize(1200, 1000);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setTitle("Derivatiles");
         setResizable(false);
 
-        WelcomeScreen welcomeScreen = new WelcomeScreen(this);
+        welcomeScreen = new WelcomeScreen(this);
     }
 
     // after all the users have been taken care of
     public void startGame(int numOrders) {
+
+        setSize(1200, numOrders * tileHeight + 300); // resize here!
+
         this.numRows = numOrders;
         functionLabel = new JLabel("", SwingConstants.CENTER);
         // functionLabel.setHorizontalAlignment(JLabel.CENTER);
@@ -57,6 +60,13 @@ public class Game extends JFrame implements KeyListener {
         pointsLabel.setFont(new Font("Calibri", Font.BOLD, 20));
         pointsLabel.setBounds(990, 15, 125, 25);
         add(pointsLabel);
+
+        // add the back button
+        backButton = new JButton("Go Back");
+        backButton.setFont(new Font("Calibri", Font.ITALIC, 15));
+        backButton.setBounds(20, 15, 100, 75);
+        backButton.addActionListener(this);
+        add(backButton);
 
         // add the numCols options
         for (int colNum = 1; colNum <= numCols; colNum++) {
@@ -140,6 +150,15 @@ public class Game extends JFrame implements KeyListener {
         }
         tm.setLoc(newRow, newCol, getGraphics());
 
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        if (e.getSource() == backButton) {
+            this.getContentPane().removeAll();
+            setSize(1200, 1000); // reset the size
+            welcomeScreen = new WelcomeScreen(this); // go back to welcome page
+        }
     }
 
     /**

@@ -3,6 +3,7 @@ import javax.swing.tree.TreeModel;
 
 /**
  * Performs differentiating calculations.
+ * Time to implement networking.
  */
 public class Differentiate {
 
