@@ -1,16 +1,14 @@
-
-/**
- * Class to create a tile
- * 
- * Documented problem. 
- */
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.*;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * Creates the grid tiles upon which the game is played.
+ * 
+ * @version 5/18/22 - 11:50 pm
+ */
 public class Tile
         extends JComponent {
     private int topLeftX, topLeftY;
@@ -24,6 +22,15 @@ public class Tile
     private final Color selectedColor = Color.BLUE;
     private final Color defaultColor = Color.BLACK;
 
+    /**
+     * Constructor method.
+     * @param lbl the JLabel that goes on this specific tile
+     * @param tX x-coordinate of tile's top left corner.
+     * @param tY y-coordinate of tile's top left corner.
+     * @param width width of the tile.
+     * @param height height of the tile.
+     * @param frame JFrame of the tile.
+     */
     public Tile(String lbl, int tX, int tY, int width, int height, JFrame frame) {
         topLeftX = tX;
         topLeftY = tY;
@@ -60,20 +67,35 @@ public class Tile
 
     }
 
+    /**
+     * Adds a label of a specified color.
+     * @param color the new label will be of this color
+     */
     public void addLabel(Color color) {
         label.setForeground(color);
         label.setBounds((int) (topLeftX + 0.1 * width), (int) (topLeftY + 0.1 * height), (int) (width * 0.8), height);
 
     }
 
+    /**
+     * Sets the text inside this tile's JLabel.
+     * @param newLabel text to set
+     */
     public void setLabel(String newLabel) {
         label.setText(Differentiate.formatSubscript(newLabel, true));
     }
 
+    /**
+     * Returns the label's text.
+     * @return label's text
+     */
     public String getText() {
         return label.getText();
     }
 
+    /**
+     * Toggles the color of the selected tile.
+     */
     public void toggleSelected() {
         System.out.println(currentColor);
         if (currentColor.equals(selectedColor)) {
