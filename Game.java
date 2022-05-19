@@ -8,7 +8,12 @@ import java.awt.*;
 import java.awt.event.*;
 
 /**
- * https://www.youtube.com/watch?v=4PfDdJ8GFHI
+ * The main driver class of the program. This class stores the frames
+ * for the GUI, and listens for user keyboard input to create responses
+ * in the GUI.
+ * 
+ * @author Sources: https://www.youtube.com/watch?v=4PfDdJ8GFHI
+ * @version 5/18/22 - 11:50 pm
  * 
  */
 public class Game extends JFrame implements KeyListener, ActionListener {
@@ -29,6 +34,9 @@ public class Game extends JFrame implements KeyListener, ActionListener {
     private static final int tileWidth = 200;
     private static final int tileHeight = 75;
 
+    /**
+     * Constructor method.
+     */
     public Game() {
 
         correctDerivatives = new String[numRows];
@@ -42,7 +50,10 @@ public class Game extends JFrame implements KeyListener, ActionListener {
         welcomeScreen = new WelcomeScreen(this);
     }
 
-    // after all the users have been taken care of
+    /**
+     * Starts the game, after all users have been taken care of.
+     * @param numOrders number of derivatives, as chosen by the player.
+     */
     public void startGame(int numOrders) {
 
         setSize(1200, numOrders * tileHeight + 300); // resize here!
@@ -136,6 +147,13 @@ public class Game extends JFrame implements KeyListener, ActionListener {
         System.out.println("passed row: " + r);
     }
 
+    /**
+     * Moves the player to a new position on the grid,
+     * as specified by <code>newRow</code> and
+     * <code>newCol</code>.
+     * @param newRow new row position
+     * @param newCol new column postition
+     */
     public void moveTo(int newRow, int newCol) {
         if (Math.abs(newCol - tm.curCol()) == 0) {
             System.out.println("this is the new row: " + newRow);
