@@ -229,21 +229,21 @@ public class Differentiate {
         // String answer = diff.differentiateString("x + sin(x)");
         // System.out.println("ans: " + answer);
 
-        FunctionsList fl = new FunctionsList("functions.txt");
-        while (fl.hasQuestions()) {
-            int i = 0;
-            String function = fl.nextFunction();
-            while (i < 10) {
-                // function = diff.differentiateString(function);
-                // System.out.println(function);
-                System.out.println(formatSubscript(function));
-                i++;
-                break;
-            }
-        }
+        // FunctionsList fl = new FunctionsList("functions.txt");
+        // while (fl.hasQuestions()) {
+        // int i = 0;
+        // String function = fl.nextFunction();
+        // while (i < 10) {
+        // // function = diff.differentiateString(function);
+        // // System.out.println(function);
+        // System.out.println(formatSubscript(function));
+        // i++;
+        // break;
+        // }
+        // }
 
-        System.out.println(formatSubscript("3x^2 + 5x^3 + 6x^2 + cos(x)"));
-        System.out.println(formatSubscript("x + cos(x)"));
+        // System.out.println(formatSubscript("3x^2 + 5x^3 + 6x^2 + cos(x)"));
+        // System.out.println(formatSubscript("x + cos(x)"));
 
         // System.out.println(diff.differentiateString("69"));
     }

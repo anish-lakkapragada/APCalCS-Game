@@ -6,6 +6,11 @@ import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.awt.*;
 import java.awt.event.*;
+import java.io.*;
+import java.net.*;
+import java.net.*;
+import java.io.*;
+import java.util.*;
 
 /**
  * https://www.youtube.com/watch?v=4PfDdJ8GFHI
@@ -13,6 +18,15 @@ import java.awt.event.*;
  */
 public class Game extends JFrame implements KeyListener, ActionListener {
 
+    // networking components
+    private boolean isTogether = false;
+    private Socket socket; // take the socket
+    private BufferedReader bf;
+    private static int PORT = 5000;
+    private static String SERVER_IP = "localhost"; // todo change this
+    private String newFunction; // newFunction entered in by the user
+
+    // swing components
     private JLabel functionLabel; // labels the current function.
     private JButton backButton; // goes back
     private WelcomeScreen welcomeScreen;
@@ -122,6 +136,30 @@ public class Game extends JFrame implements KeyListener, ActionListener {
         }
 
         tm.setLoc(curRow, (int) (Math.random() * numCols), getGraphics()); // select
+    }
+
+    /**
+     * Initiate play time together.
+     */
+    public void togetherPlay(int numOrders) throws IOException {
+        numRows = numOrders;
+
+        ServerSocket listener = new ServerSocket(PORT);
+        socket = listener.accept(); // listens for the connection
+
+        isTogether = true;
+
+        while (isTogether) {
+            bf = new BufferedReader(new InputStreamReader(socket.getInputStream())); // constantly read in the given
+                                                                                     // functions
+            String str = bf.readLine();
+            System.out.println("this is the str: " + str);
+
+            // TODO here in Game.java
+        }
+
+        listener.close();
+        socket.close();
     }
 
     private void evaluatePoints(int r, int c) {

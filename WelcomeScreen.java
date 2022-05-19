@@ -1,6 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.io.*;
 
 /**
  * Implements a welcome screen to the game.
@@ -10,7 +11,7 @@ public class WelcomeScreen implements ActionListener {
     private JLabel gameLabel;
     private JLabel numDerivLabel;
     private JSlider numDerivSlider;
-    private JButton startButton, quitButton;
+    private JButton startButton, quitButton, togetherButton;
 
     /**
      * Constructs the welcome screen
@@ -20,7 +21,7 @@ public class WelcomeScreen implements ActionListener {
     public WelcomeScreen(Game gF) {
 
         gameFrame = gF;
-        gameFrame.setSize(600, 500);
+        gameFrame.setSize(600, 525);
 
         gameLabel = new JLabel("Derivatiles Game", SwingConstants.CENTER);
         gameLabel.setBounds(150, 10, 300, 100);
@@ -38,8 +39,14 @@ public class WelcomeScreen implements ActionListener {
         startButton.addActionListener(this);
         gameFrame.add(startButton);
 
+        togetherButton = new JButton("Play with another person");
+        togetherButton.setBounds(200, 375, 200, 50);
+        togetherButton.setFont(new Font("Calibri", Font.ITALIC, 20));
+        togetherButton.addActionListener(this);
+        gameFrame.add(togetherButton);
+
         quitButton = new JButton("Get a life");
-        quitButton.setBounds(200, 375, 200, 50);
+        quitButton.setBounds(200, 450, 200, 50);
         quitButton.setFont(new Font("Calibri", Font.ITALIC, 20));
         quitButton.addActionListener(this);
         gameFrame.add(quitButton);
@@ -65,6 +72,18 @@ public class WelcomeScreen implements ActionListener {
         int selectedOrders = numDerivSlider.getValue();
         if (selectedOrders == 0) {
             numDerivLabel.setForeground(Color.RED);
+            return;
+        }
+
+        else if (e.getSource() == togetherButton) {
+            gameFrame.getContentPane().removeAll();
+            System.out.println("yoo we here");
+            try {
+                gameFrame.togetherPlay(numDerivSlider.getValue());
+            } catch (IOException event) {
+                return;
+            }
+
             return;
         }
 
