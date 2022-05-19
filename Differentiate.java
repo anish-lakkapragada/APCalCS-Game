@@ -26,6 +26,8 @@ public class Differentiate {
     }
 
     /**
+     * Performs differentiation calculations on a specified function.
+     * 
      * @param function A math function given in string form.
      * Preconditions: A polynomial +/- sin or cos function.
      * Coefficients included for polynomials but not for sine and cosine.
