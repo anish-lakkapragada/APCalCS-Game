@@ -4,6 +4,8 @@ import java.awt.event.*;
 
 /**
  * Implements a welcome screen to the game.
+ * 
+ * @version 5/18/22 - 11:50 pm
  */
 public class WelcomeScreen implements ActionListener {
     private Game gameFrame;
@@ -15,7 +17,7 @@ public class WelcomeScreen implements ActionListener {
     /**
      * Constructs the welcome screen
      * 
-     * @param gameFrame Takes in the game frame.
+     * @param gF Takes in the game frame.
      */
     public WelcomeScreen(Game gF) {
 
