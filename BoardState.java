@@ -1,5 +1,6 @@
 /**
  * Controls the current state of the board.
+ * @version 5/18/22 - 11:50 pm
  */
 public class BoardState {
     private int points;
@@ -76,7 +77,7 @@ public class BoardState {
 
     /**
      * Returns a randomly generated function
-     * @return function
+     * @return randomly generated function
      */
     private static String randomFunction() {
         String generatedFunc = "";
