@@ -26,12 +26,11 @@ public class Differentiate {
     }
 
     /**
-     * @param function a math function given in string form.
-     *                 Preconditions: A polynomial +/- sin or cos function.
-     *                 Coefficients included for polynomials but not for sin and
-     *                 cos.
+     * @param function A math function given in string form.
+     * Preconditions: A polynomial +/- sin or cos function.
+     * Coefficients included for polynomials but not for sine and cosine.
      *
-     * @return the derivative of the function in string form.
+     * @return The derivative of the function in string form.
      */
     public String differentiateString(String function) {
 
