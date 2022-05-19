@@ -160,20 +160,50 @@ public class Differentiate {
 
     }
 
-    public static String formatSuscript(String function) {
+    /**
+     * Function that formats a function (represented in String form).
+     * The returned function in String form is ready to be displayed in the
+     * JFrame.
+     * 
+     * @param function function in String form
+     * @return function coming back in String form
+     */
+    public static String formatSubscript(String function, boolean addHTMLTag) {
         // 3x^3 + 6x^2
-        String newFunction = "<html>";
-        int carrotIndex = function.indexOf("^");
-        if (carrotIndex < 0) {
-            return function; // no exponents;
+        ArrayList<Integer> allCarrots = new ArrayList<Integer>();
+        String newFunction = "";
+        for (int i = 0; i < function.length(); i++) {
+            if (function.substring(i, i + 1).equals("^")) {
+                allCarrots.add(i);
+                newFunction += "<sup>";
+                continue;
+            }
+            newFunction += function.substring(i, i + 1);
         }
 
-        newFunction += function.substring(0, carrotIndex);
-        newFunction += "<sup>";
-        newFunction += function.substring(carrotIndex + 1, carrotIndex + 2);
-        newFunction += "</sup>" + function.substring(carrotIndex + 2, function.length());
+        if (allCarrots.size() == 0) {
+            return function;
+        }
 
-        return null;
+        System.out.println("this is the new function: " + newFunction);
+        System.out.println("all carrot indices: " + allCarrots);
+        String finalFunction = "";
+        int lastIndex = 0;
+        int numBefore = 0;
+        for (int carrotIndex : allCarrots) {
+            carrotIndex += numBefore * 4; // account for changes in carrotIndex.
+            finalFunction += newFunction.substring(lastIndex, carrotIndex + 5 + 1) + "</sup>";
+            lastIndex = carrotIndex + 5 + 1;
+            numBefore++;
+        }
+
+        finalFunction += newFunction.substring(lastIndex, newFunction.length());
+
+        if (!addHTMLTag) {
+            return finalFunction;
+        }
+
+        return "<html> " + finalFunction + " </html>";
     }
 
     /**
@@ -204,11 +234,16 @@ public class Differentiate {
             int i = 0;
             String function = fl.nextFunction();
             while (i < 10) {
-                function = diff.differentiateString(function);
-                System.out.println(function);
+                // function = diff.differentiateString(function);
+                // System.out.println(function);
+                System.out.println(formatSubscript(function));
                 i++;
+                break;
             }
         }
+
+        System.out.println(formatSubscript("3x^2 + 5x^3 + 6x^2 + cos(x)"));
+        System.out.println(formatSubscript("x + cos(x)"));
 
         // System.out.println(diff.differentiateString("69"));
     }

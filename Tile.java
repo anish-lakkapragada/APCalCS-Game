@@ -67,7 +67,7 @@ public class Tile
     }
 
     public void setLabel(String newLabel) {
-        label.setText(newLabel);
+        label.setText(Differentiate.formatSubscript(newLabel, true));
     }
 
     public String getText() {

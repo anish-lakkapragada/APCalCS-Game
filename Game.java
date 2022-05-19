@@ -50,15 +50,15 @@ public class Game extends JFrame implements KeyListener, ActionListener {
         this.numRows = numOrders;
         functionLabel = new JLabel("", SwingConstants.CENTER);
         // functionLabel.setHorizontalAlignment(JLabel.CENTER);
-        functionLabel.setBounds(350, 30, 500, 25);
-        functionLabel.setFont(new Font("Calibri", Font.ITALIC, 30));
+        functionLabel.setBounds(350, 50, 500, 45);
+        functionLabel.setFont(new Font("Calibri", Font.BOLD, 25));
         // panel.add(functionLabel);
         add(functionLabel);
 
         // add the points label
         pointsLabel = new JLabel("Points: " + 0);
-        pointsLabel.setFont(new Font("Calibri", Font.BOLD, 20));
-        pointsLabel.setBounds(990, 15, 125, 25);
+        pointsLabel.setFont(new Font("Calibri", Font.ITALIC, 20));
+        pointsLabel.setBounds(935, 60, 125, 25);
         add(pointsLabel);
 
         // add the back button
@@ -118,7 +118,7 @@ public class Game extends JFrame implements KeyListener, ActionListener {
             correctDerivatives = d.correctAnswers(newQuestion, numRows);
             String[][] gridLabels = BoardState.getGrid(newQuestion, numRows, numCols);
             tm.setLabels(gridLabels);
-            functionLabel.setText("f(x) = " + newQuestion);
+            functionLabel.setText("<html> f(x) = " + Differentiate.formatSubscript(newQuestion, false) + " </html>");
         }
 
         tm.setLoc(curRow, (int) (Math.random() * numCols), getGraphics()); // select
