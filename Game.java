@@ -56,12 +56,17 @@ public class Game extends JFrame implements KeyListener, ActionListener {
         welcomeScreen = new WelcomeScreen(this);
     }
 
-    // after all the users have been taken care of
-    public void startGame(int numOrders) {
+    public void clear() {
+        getContentPane().removeAll();
+        getContentPane().revalidate();
+        getContentPane().repaint();
+    }
 
+    // after all the users have been taken care of
+    public void startGame(int numOrders, boolean isNetworking) {
         setSize(1200, numOrders * tileHeight + 300); // resize here!
 
-        this.numRows = numOrders;
+        numRows = numOrders;
         functionLabel = new JLabel("", SwingConstants.CENTER);
         // functionLabel.setHorizontalAlignment(JLabel.CENTER);
         functionLabel.setBounds(350, 50, 500, 45);
@@ -110,30 +115,74 @@ public class Game extends JFrame implements KeyListener, ActionListener {
         }
 
         curRow = numRows - 1;
+        System.out.println(Thread.currentThread().getName());
         tm = new TileManager(numRows, numCols, tileWidth, tileHeight, 125, 200, new String[numRows][numCols], this);
         tm.paintComponent(getGraphics());
         add(tm);
 
-        setupGame();
+        if (isNetworking) {
+            boardState = new BoardState();
+            System.out.println("starting thread");
+            (new Thread(() -> {
+                try {
+                    // System.out.println("i learned to lead");
+                    // togetherPlay(numOrders);
+                    System.out.println("back to back");
+
+                    ServerSocket listener = new ServerSocket(PORT);
+                    socket = listener.accept();
+
+                    System.out.println("wahts up");
+
+                    System.out.println("nice");
+
+                    this.isTogether = true;
+                    // ok so I basically need a condition on this
+                    while (this.isTogether) {
+                        bf = new BufferedReader(new InputStreamReader(socket.getInputStream())); // constantly read in
+                        String str = bf.readLine(); // read in the function.
+                        updateQuestion(str.substring("f(x) = ".length()));
+                        try {
+                            Thread.sleep(1500); // sleep for 1.5 seeconds
+                        } catch (InterruptedException exx) {
+                        }
+                        System.out.println("reiterating");
+                    }
+
+                    listener.close();
+                    socket.close();
+
+                } catch (IOException ex) {
+                    System.out.println("exception already");
+                    return;
+                }
+            })).start();
+        }
+
+        else {
+            setupGame();
+        }
 
         setVisible(true);
+
     }
 
     private void setupGame() {
         boardState = new BoardState();
         fl = new FunctionsList("functions.txt");
-        updateQuestion();
+        updateQuestion(null);
     }
 
-    private void updateQuestion() {
+    private void updateQuestion(String function) {
         curRow = numRows - 1;
-        if (fl.hasQuestions()) {
-            String newQuestion = fl.nextFunction();
-            correctDerivatives = d.correctAnswers(newQuestion, numRows);
-            String[][] gridLabels = BoardState.getGrid(newQuestion, numRows, numCols);
-            tm.setLabels(gridLabels);
-            functionLabel.setText("<html> f(x) = " + Differentiate.formatSubscript(newQuestion, false) + " </html>");
+        String newQuestion = function;
+        if (newQuestion == null && fl.hasQuestions()) {
+            newQuestion = fl.nextFunction();
         }
+        correctDerivatives = d.correctAnswers(newQuestion, numRows);
+        String[][] gridLabels = BoardState.getGrid(newQuestion, numRows, numCols);
+        tm.setLabels(gridLabels);
+        functionLabel.setText("<html> f(x) = " + Differentiate.formatSubscript(newQuestion, false) + " </html>");
 
         tm.setLoc(curRow, (int) (Math.random() * numCols), getGraphics()); // select
     }
@@ -142,8 +191,11 @@ public class Game extends JFrame implements KeyListener, ActionListener {
      * Initiate play time together.
      */
     public void togetherPlay(int numOrders) throws IOException {
+
+        System.out.println("number of orders: " + numOrders);
         numRows = numOrders;
 
+        System.out.println("starting the game right now");
         ServerSocket listener = new ServerSocket(PORT);
         socket = listener.accept(); // listens for the connection
 
@@ -152,10 +204,8 @@ public class Game extends JFrame implements KeyListener, ActionListener {
         while (isTogether) {
             bf = new BufferedReader(new InputStreamReader(socket.getInputStream())); // constantly read in the given
                                                                                      // functions
-            String str = bf.readLine();
-            System.out.println("this is the str: " + str);
+            String str = bf.readLine(); // read in the function.
 
-            // TODO here in Game.java
         }
 
         listener.close();
@@ -178,8 +228,8 @@ public class Game extends JFrame implements KeyListener, ActionListener {
         if (Math.abs(newCol - tm.curCol()) == 0) {
             System.out.println("this is the new row: " + newRow);
 
-            if (newRow < 0) {
-                updateQuestion(); // they kinda done now
+            if (newRow < 0 && !this.isTogether) {
+                updateQuestion(null); // they kinda done now
             }
 
             evaluatePoints(tm.curRow(), tm.curCol());
@@ -194,6 +244,7 @@ public class Game extends JFrame implements KeyListener, ActionListener {
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == backButton) {
             this.getContentPane().removeAll();
+            this.isTogether = false; // false
             setSize(1200, 1000); // reset the size
             welcomeScreen = new WelcomeScreen(this); // go back to welcome page
         }
@@ -249,5 +300,10 @@ public class Game extends JFrame implements KeyListener, ActionListener {
 
     public static void main(String[] args) {
         Game game = new Game();
+    }
+
+    public static void restartGame(int numOrders) {
+        Game game = new Game();
+        game.startGame(numOrders, true);
     }
 }

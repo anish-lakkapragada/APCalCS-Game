@@ -55,6 +55,7 @@ public class Client extends JFrame implements ActionListener {
         if (e.getSource() == sendButton) {
             pw.println(functionTF.getText()); // yeet memers
             pw.flush(); // flush the data, don't close the socket though
+            System.out.println("flusing it out");
         }
     }
 

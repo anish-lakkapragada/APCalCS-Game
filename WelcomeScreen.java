@@ -1,6 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.concurrent.TimeUnit;
 import java.io.*;
 
 /**
@@ -21,7 +22,7 @@ public class WelcomeScreen implements ActionListener {
     public WelcomeScreen(Game gF) {
 
         gameFrame = gF;
-        gameFrame.setSize(600, 525);
+        gameFrame.setSize(600, 600);
 
         gameLabel = new JLabel("Derivatiles Game", SwingConstants.CENTER);
         gameLabel.setBounds(150, 10, 300, 100);
@@ -34,14 +35,14 @@ public class WelcomeScreen implements ActionListener {
         gameFrame.add(numDerivLabel);
 
         startButton = new JButton("Start Game!");
-        startButton.setBounds(200, 300, 200, 50);
+        startButton.setBounds(200, 315, 200, 50);
         startButton.setFont(new Font("Calibri", Font.ITALIC, 20));
         startButton.addActionListener(this);
         gameFrame.add(startButton);
 
         togetherButton = new JButton("Play with another person");
         togetherButton.setBounds(200, 375, 200, 50);
-        togetherButton.setFont(new Font("Calibri", Font.ITALIC, 20));
+        togetherButton.setFont(new Font("Calibri", Font.ITALIC, 15));
         togetherButton.addActionListener(this);
         gameFrame.add(togetherButton);
 
@@ -64,6 +65,7 @@ public class WelcomeScreen implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
+
         if (e.getSource() == quitButton) {
             System.exit(0);
             return;
@@ -76,18 +78,19 @@ public class WelcomeScreen implements ActionListener {
         }
 
         else if (e.getSource() == togetherButton) {
+            int value = numDerivSlider.getValue();
+            // remove all the components of the JFrame
+
             gameFrame.getContentPane().removeAll();
-            System.out.println("yoo we here");
-            try {
-                gameFrame.togetherPlay(numDerivSlider.getValue());
-            } catch (IOException event) {
-                return;
-            }
+            gameFrame.getContentPane().revalidate();
+            gameFrame.getContentPane().repaint();
+
+            gameFrame.startGame(selectedOrders, true);
 
             return;
         }
 
         gameFrame.getContentPane().removeAll();
-        gameFrame.startGame(selectedOrders);
+        gameFrame.startGame(selectedOrders, false);
     }
 }
