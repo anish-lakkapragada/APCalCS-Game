@@ -11,6 +11,7 @@ import java.net.*;
 import java.net.*;
 import java.io.*;
 import java.util.*;
+import java.net.InetAddress;
 
 /**
  * https://www.youtube.com/watch?v=4PfDdJ8GFHI
@@ -23,7 +24,7 @@ public class Game extends JFrame implements KeyListener, ActionListener {
     private Socket socket; // take the socket
     private BufferedReader bf;
     private static int PORT = 5000;
-    private static String SERVER_IP = "localhost"; // todo change this
+    private static String SERVER_IP; // todo change this
     private String newFunction; // newFunction entered in by the user
 
     // swing components
@@ -44,6 +45,12 @@ public class Game extends JFrame implements KeyListener, ActionListener {
     private static final int tileHeight = 75;
 
     public Game() {
+
+        try {
+            SERVER_IP = InetAddress.getLocalHost().toString();
+        } catch (Exception e) {
+
+        }
 
         correctDerivatives = new String[numRows];
         setFocusable(true);

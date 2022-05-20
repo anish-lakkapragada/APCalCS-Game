@@ -14,7 +14,7 @@ public class Client extends JFrame implements ActionListener {
 
     // https://www.youtube.com/watch?v=h2zi2lVNhtk
     private JButton sendButton; // sends data to the Server
-    private JTextField functionTF; // enters in the stuff over here
+    private JTextField ipTF, functionTF; // enters in the stuff over here
     private Socket socket; // client socket
     private PrintWriter pw;
 
@@ -25,6 +25,15 @@ public class Client extends JFrame implements ActionListener {
         setResizable(false);
         setFocusable(true);
         getContentPane().setLayout(null);
+
+        JLabel ipLabel = new JLabel("Enter IP Address of Computer to Send to Below!", SwingConstants.CENTER);
+        ipLabel.setFont(new Font("Calibri", Font.BOLD, 10));
+        ipLabel.setBounds(500, 75, 300, 50);
+        add(ipLabel);
+
+        ipTF = new JTextField("");
+        ipTF.setBounds(500, 130, 300, 50);
+        add(ipTF);
 
         JLabel label = new JLabel("Enter function below!", SwingConstants.CENTER);
         label.setFont(new Font("Calibri", Font.BOLD, 15));
@@ -45,18 +54,27 @@ public class Client extends JFrame implements ActionListener {
         // basically setup the buttons and the text fields over here.
         // then setup the Socket over here to connect the server
 
-        socket = new Socket(SERVER_IP, 5000);
-        pw = new PrintWriter(socket.getOutputStream(), true);
-
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == sendButton) {
+            try {
+                socket = new Socket(ipTF.getText(), 5000);
+                pw = new PrintWriter(socket.getOutputStream(), true);
+            }
+
+            catch (Exception ex) {
+                System.out.println("didn't work");
+                System.out.println(ex);
+                return;
+            }
+
             pw.println(functionTF.getText()); // yeet memers
             pw.flush(); // flush the data, don't close the socket though
             System.out.println("flusing it out");
         }
+
     }
 
     public static void main(String[] args) throws IOException {
