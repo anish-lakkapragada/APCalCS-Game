@@ -2,6 +2,9 @@ import java.net.*;
 import java.io.*;
 import java.util.*;
 
+/**
+ * I don't think we actually ever use this class.
+ */
 public class Server {
     private static final int PORT = 5000;
     private Socket socket;

@@ -35,19 +35,19 @@ public class WelcomeScreen implements ActionListener {
         gameFrame.add(numDerivLabel);
 
         startButton = new JButton("Start Game!");
-        startButton.setBounds(200, 315, 200, 50);
+        startButton.setBounds(200, 325, 200, 50);
         startButton.setFont(new Font("Calibri", Font.ITALIC, 20));
         startButton.addActionListener(this);
         gameFrame.add(startButton);
 
         togetherButton = new JButton("Play with another person");
-        togetherButton.setBounds(200, 375, 200, 50);
+        togetherButton.setBounds(200, 385, 200, 50);
         togetherButton.setFont(new Font("Calibri", Font.ITALIC, 15));
         togetherButton.addActionListener(this);
         gameFrame.add(togetherButton);
 
         quitButton = new JButton("Get a life");
-        quitButton.setBounds(200, 450, 200, 50);
+        quitButton.setBounds(200, 445, 200, 50);
         quitButton.setFont(new Font("Calibri", Font.ITALIC, 20));
         quitButton.addActionListener(this);
         gameFrame.add(quitButton);

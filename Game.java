@@ -21,7 +21,9 @@ public class Game extends JFrame implements KeyListener, ActionListener {
 
     // networking components
     private boolean isTogether = false;
+    private boolean networkAddedPoints = false;
     private Socket socket; // take the socket
+    private ServerSocket listener; // listener for the socket.
     private BufferedReader bf;
     private static int PORT = 5000;
     private static String SERVER_IP; // todo change this
@@ -136,7 +138,7 @@ public class Game extends JFrame implements KeyListener, ActionListener {
                     // togetherPlay(numOrders);
                     System.out.println("back to back");
 
-                    ServerSocket listener = new ServerSocket(PORT);
+                    listener = new ServerSocket(PORT);
                     socket = listener.accept();
 
                     System.out.println("wahts up");
@@ -152,14 +154,13 @@ public class Game extends JFrame implements KeyListener, ActionListener {
                         try {
                             Thread.sleep(1500); // sleep for 1.5 seeconds
                         } catch (InterruptedException exx) {
+                            System.out.println("BS exception");
                         }
                         System.out.println("reiterating");
                     }
 
-                    listener.close();
-                    socket.close();
-
                 } catch (IOException ex) {
+                    System.out.println(ex);
                     System.out.println("exception already");
                     return;
                 }
@@ -239,10 +240,23 @@ public class Game extends JFrame implements KeyListener, ActionListener {
                 updateQuestion(null); // they kinda done now
             }
 
+            else if (newRow < 0 && this.isTogether && !networkAddedPoints) {
+                System.out.println("yoo whats good tho");
+                boardState.incrementPoints(3);
+                pointsLabel.setText("Points: " + boardState.getPoints());
+                networkAddedPoints = true;
+                return;
+            }
+
+            else if (networkAddedPoints) {
+                return;
+            }
+
             evaluatePoints(tm.curRow(), tm.curCol());
             tm.setLoc(newRow, newCol, getGraphics());
             return;
         }
+
         tm.setLoc(newRow, newCol, getGraphics());
 
     }
@@ -250,8 +264,21 @@ public class Game extends JFrame implements KeyListener, ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == backButton) {
+            try {
+                PrintWriter pw = new PrintWriter(socket.getOutputStream());
+                pw.println("done");
+                pw.flush();
+
+                System.out.println("whats good bois");
+                listener.close();
+                socket.close();
+            } catch (Exception ex) {
+                System.out.println("java sucks");
+            }
+
             this.getContentPane().removeAll();
             this.isTogether = false; // false
+            networkAddedPoints = false;
             setSize(1200, 1000); // reset the size
             welcomeScreen = new WelcomeScreen(this); // go back to welcome page
         }
