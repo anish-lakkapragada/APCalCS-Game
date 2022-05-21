@@ -3,8 +3,8 @@ import java.net.*;
 import javax.swing.*;
 import java.awt.event.*;
 import java.awt.*;
-import java.util.Timer; 
-import java.util.TimerTask; 
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * Client class should be ran (in isolation) to give the other user functions to
@@ -16,6 +16,7 @@ public class Client extends JFrame implements ActionListener {
 
     // https://www.youtube.com/watch?v=h2zi2lVNhtk
     private JButton sendButton; // sends data to the Server
+    private JButton restartButton;
     private JTextField ipTF, functionTF; // enters in the stuff over here
     private Socket socket; // client socket
     private PrintWriter pw;
@@ -47,50 +48,56 @@ public class Client extends JFrame implements ActionListener {
         add(functionTF);
 
         sendButton = new JButton("Send to other!");
-        sendButton.setBounds(500, 375, 300, 50);
+        sendButton.setBounds(500, 335, 300, 50);
         sendButton.addActionListener(this);
         add(sendButton);
 
+        restartButton = new JButton("Restart connection!");
+        restartButton.setBounds(500, 395, 300, 50);
+        restartButton.addActionListener(this);
+        add(restartButton);
+
         setVisible(true);
 
-
         (new Thread(() -> {
-            BufferedReader bf = null; 
+            BufferedReader bf = null;
             while (bf == null) {
                 try {
                     bf = new BufferedReader(new InputStreamReader(socket.getInputStream()));
                     break;
-                } catch (Exception e) {}
+                } catch (Exception e) {
+                }
 
                 try {
                     Thread.sleep(1500);
-                } catch (Exception e) {}
+                } catch (Exception e) {
+                }
 
                 System.out.println("still here");
             }
 
-            // buffered reader is created. 
+            // buffered reader is created.
             try {
-                String message = bf.readLine();     
+                String message = bf.readLine();
                 if (message.equals("done")) {
                     // the other socket is exited now, time to shut down the socket
-                    socket.close(); 
-                    socket = null; 
+                    socket.close();
+                    socket = null;
                 }
-            } catch (Exception e) {}
+            } catch (Exception e) {
+            }
 
-            
-        })).start(); 
+        })).start();
 
-        // Timer timer = new Timer();         
+        // Timer timer = new Timer();
         // timer.scheduleAtFixedRate(new TimerTask() {
-        //     @Override
-        //     public void run() {
-        //        try {
-        //             socket = new Socket(ipTF.getText(), 5000);
-        //             pw = new PrintWriter(socket.getOutputStream(), true);
-        //        } catch (Exception e) {}
-        //     }
+        // @Override
+        // public void run() {
+        // try {
+        // socket = new Socket(ipTF.getText(), 5000);
+        // pw = new PrintWriter(socket.getOutputStream(), true);
+        // } catch (Exception e) {}
+        // }
         // }, 2000, 3000);
     }
 
@@ -114,6 +121,15 @@ public class Client extends JFrame implements ActionListener {
             pw.flush(); // flush the data, don't close the socket though
             System.out.println("flusing it out");
 
+            // 192.168.4.27
+        }
+
+        else if (e.getSource() == restartButton) {
+            try {
+                socket = new Socket(ipTF.getText(), 5000);
+                pw = new PrintWriter(socket.getOutputStream(), true);
+            } catch (Exception ex) {
+            }
         }
 
     }
