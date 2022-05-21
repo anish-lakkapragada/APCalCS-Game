@@ -3,6 +3,8 @@ import java.net.*;
 import javax.swing.*;
 import java.awt.event.*;
 import java.awt.*;
+import java.util.Timer; 
+import java.util.TimerTask; 
 
 /**
  * Client class should be ran (in isolation) to give the other user functions to
@@ -51,17 +53,55 @@ public class Client extends JFrame implements ActionListener {
 
         setVisible(true);
 
-        // basically setup the buttons and the text fields over here.
-        // then setup the Socket over here to connect the server
 
+        (new Thread(() -> {
+            BufferedReader bf = null; 
+            while (bf == null) {
+                try {
+                    bf = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+                    break;
+                } catch (Exception e) {}
+
+                try {
+                    Thread.sleep(1500);
+                } catch (Exception e) {}
+
+                System.out.println("still here");
+            }
+
+            // buffered reader is created. 
+            try {
+                String message = bf.readLine();     
+                if (message.equals("done")) {
+                    // the other socket is exited now, time to shut down the socket
+                    socket.close(); 
+                    socket = null; 
+                }
+            } catch (Exception e) {}
+
+            
+        })).start(); 
+
+        // Timer timer = new Timer();         
+        // timer.scheduleAtFixedRate(new TimerTask() {
+        //     @Override
+        //     public void run() {
+        //        try {
+        //             socket = new Socket(ipTF.getText(), 5000);
+        //             pw = new PrintWriter(socket.getOutputStream(), true);
+        //        } catch (Exception e) {}
+        //     }
+        // }, 2000, 3000);
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == sendButton) {
             try {
-                socket = new Socket(ipTF.getText(), 5000);
-                pw = new PrintWriter(socket.getOutputStream(), true);
+                if (socket == null) {
+                    socket = new Socket(ipTF.getText(), 5000);
+                    pw = new PrintWriter(socket.getOutputStream(), true);
+                }
             }
 
             catch (Exception ex) {
@@ -73,11 +113,12 @@ public class Client extends JFrame implements ActionListener {
             pw.println(functionTF.getText()); // yeet memers
             pw.flush(); // flush the data, don't close the socket though
             System.out.println("flusing it out");
+
         }
 
     }
 
     public static void main(String[] args) throws IOException {
-        Client client = new Client();
+        Client client = new Client(); // 192.168.4.108
     }
 }
