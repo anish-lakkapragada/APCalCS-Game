@@ -1,3 +1,3 @@
 # APCalCS-Game
 
-YOOO I GOT THE NETWORKING SETUP 
+looks better
