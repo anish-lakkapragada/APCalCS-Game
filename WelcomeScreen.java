@@ -1,6 +1,8 @@
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.concurrent.TimeUnit;
+import java.io.*;
 
 /**
  * Implements a welcome screen to the game.
@@ -12,7 +14,7 @@ public class WelcomeScreen implements ActionListener {
     private JLabel gameLabel;
     private JLabel numDerivLabel;
     private JSlider numDerivSlider;
-    private JButton startButton, quitButton;
+    private JButton startButton, quitButton, togetherButton;
 
     /**
      * Constructs the welcome screen
@@ -22,7 +24,7 @@ public class WelcomeScreen implements ActionListener {
     public WelcomeScreen(Game gF) {
 
         gameFrame = gF;
-        gameFrame.setSize(600, 500);
+        gameFrame.setSize(600, 600);
 
         gameLabel = new JLabel("Derivatiles Game", SwingConstants.CENTER);
         gameLabel.setBounds(150, 10, 300, 100);
@@ -35,13 +37,19 @@ public class WelcomeScreen implements ActionListener {
         gameFrame.add(numDerivLabel);
 
         startButton = new JButton("Start Game!");
-        startButton.setBounds(200, 300, 200, 50);
+        startButton.setBounds(200, 325, 200, 50);
         startButton.setFont(new Font("Calibri", Font.ITALIC, 20));
         startButton.addActionListener(this);
         gameFrame.add(startButton);
 
+        togetherButton = new JButton("Play with another person");
+        togetherButton.setBounds(200, 385, 200, 50);
+        togetherButton.setFont(new Font("Calibri", Font.ITALIC, 15));
+        togetherButton.addActionListener(this);
+        gameFrame.add(togetherButton);
+
         quitButton = new JButton("Get a life");
-        quitButton.setBounds(200, 375, 200, 50);
+        quitButton.setBounds(200, 445, 200, 50);
         quitButton.setFont(new Font("Calibri", Font.ITALIC, 20));
         quitButton.addActionListener(this);
         gameFrame.add(quitButton);
@@ -59,6 +67,7 @@ public class WelcomeScreen implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
+
         if (e.getSource() == quitButton) {
             System.exit(0);
             return;
@@ -70,7 +79,20 @@ public class WelcomeScreen implements ActionListener {
             return;
         }
 
+        else if (e.getSource() == togetherButton) {
+            int value = numDerivSlider.getValue();
+            // remove all the components of the JFrame
+
+            gameFrame.getContentPane().removeAll();
+            gameFrame.getContentPane().revalidate();
+            gameFrame.getContentPane().repaint();
+
+            gameFrame.startGame(selectedOrders, true);
+
+            return;
+        }
+
         gameFrame.getContentPane().removeAll();
-        gameFrame.startGame(selectedOrders);
+        gameFrame.startGame(selectedOrders, false);
     }
 }

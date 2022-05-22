@@ -14,6 +14,7 @@ public class FunctionsList {
 
     /**
      * Constructor method.
+     * 
      * @param fName file with functions to put into the queue
      */
     public FunctionsList(String fName) {
@@ -39,6 +40,7 @@ public class FunctionsList {
     /**
      * Returns true if <code>questionsQueue</code> is not empty,
      * returns false otherwise.
+     * 
      * @return true if NOT empty
      */
     public boolean hasQuestions() {

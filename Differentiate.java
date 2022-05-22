@@ -187,8 +187,6 @@ public class Differentiate {
             return function;
         }
 
-        System.out.println("this is the new function: " + newFunction);
-        System.out.println("all carrot indices: " + allCarrots);
         String finalFunction = "";
         int lastIndex = 0;
         int numBefore = 0;
