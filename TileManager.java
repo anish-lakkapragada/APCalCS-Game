@@ -1,13 +1,12 @@
+import java.awt.*;
+import java.util.concurrent.TimeUnit;
+import javax.swing.*;
 
 /**
  * Tile Manager class for managing the tiles.
+ * 
+ * @version 5/18/22 - 11:50 pm
  */
-
-import java.awt.*;
-import java.util.concurrent.TimeUnit;
-
-import javax.swing.*;
-
 public class TileManager extends JComponent {
     private Tile[][] grid;
     private int numRows, numCols;
@@ -62,6 +61,13 @@ public class TileManager extends JComponent {
         }
     }
 
+    /**
+     * Returns the function at a specified
+     * point on the grid.
+     * @param r row of function to return
+     * @param c column of function to return
+     * @return The function at [r][c].
+     */
     public String getFunction(int r, int c) {
         return grid[r][c].getText();
     }
@@ -84,6 +90,15 @@ public class TileManager extends JComponent {
 
     }
 
+    /**
+     * Determines if a location as specified by the
+     * parameters r and c is valid or not.
+     * 
+     * @param r row to look at
+     * @param c column to look at
+     * @return True if [r][c] is a valid location on the grid,
+     * false otherwise.
+     */
     public boolean validLoc(int r, int c) {
         return r >= 0 && r < numRows && c >= 0 && c < numCols;
     }
@@ -92,10 +107,9 @@ public class TileManager extends JComponent {
      * Sets the current location on the grid (in the JFrame) to the specified
      * row and column.
      * 
-     * Returns 1 if successful and 0 if not (out of bounds value).
-     * 
-     * @param newRow
-     * @param new    Col
+     * @param newRow new row for current location
+     * @param newCol new column for current location
+     * @return 1 if move is successful, 0 otherwise (out of bounds value).
      */
     public int setLoc(int newRow, int newCol, Graphics g) {
         if (!validLoc(newRow, newCol)) {
@@ -137,6 +151,10 @@ public class TileManager extends JComponent {
         return curCol;
     }
 
+    /**
+     * Returns the current state of the grid as a 2-D array.
+     * @return grid (in its current state)
+     */
     public Tile[][] getGrid() {
         return grid;
     }

@@ -4,6 +4,8 @@ import javax.swing.tree.TreeModel;
 /**
  * Performs differentiating calculations.
  * Time to implement networking.
+ * 
+ * @version 5/18/22 - 11:50 pm
  */
 public class Differentiate {
 
@@ -24,14 +26,14 @@ public class Differentiate {
     }
 
     /**
-     * @param function a math function given in string form.
-     *                 Preconditions: A polynomial +/- sin or cos function.
-     *                 Coefficients included for polynomials but not for sin and
-     *                 cos.
+     * Performs differentiation calculations on a specified function.
+     * 
+     * @param function A math function given in string form.
+     * Preconditions: A polynomial +/- sin or cos function.
+     * Coefficients included for polynomials but not for sine and cosine.
      *
-     * @return the derivative of the function in string form.
+     * @return The derivative of the function in string form.
      */
-
     public String differentiateString(String function) {
 
         // "3x^2 + cos(x)" => ["3x^2", "+", "cos(x)"]
@@ -205,10 +207,11 @@ public class Differentiate {
     }
 
     /**
-     * 
-     * @param function
-     * @param numOrders
-     * @return
+     * Returns the 1st to <code>numOrders</code>-th derivatives of
+     * <code>function</code> as Strings in an array.
+     * @param function function to get derivatives
+     * @param numOrders number of derivatives to get
+     * @return array of derivatives
      */
     public String[] correctAnswers(String function, int numOrders) {
         String[] derivatives = new String[numOrders];
@@ -227,21 +230,22 @@ public class Differentiate {
         // String answer = diff.differentiateString("x + sin(x)");
         // System.out.println("ans: " + answer);
 
-        // FunctionsList fl = new FunctionsList("functions.txt");
-        // while (fl.hasQuestions()) {
-        // int i = 0;
-        // String function = fl.nextFunction();
-        // while (i < 10) {
-        // // function = diff.differentiateString(function);
-        // // System.out.println(function);
-        // System.out.println(formatSubscript(function));
-        // i++;
-        // break;
-        // }
-        // }
+        FunctionsList fl = new FunctionsList("functions.txt");
+        while (fl.hasQuestions()) {
+            int i = 0;
+            String function = fl.nextFunction();
+            while (i < 10) {
+                // function = diff.differentiateString(function);
+                // System.out.println(function);
+                System.out.println(formatSubscript(function, true));
+                i++;
+                break;
+            }
+        }
 
-        // System.out.println(formatSubscript("3x^2 + 5x^3 + 6x^2 + cos(x)"));
-        // System.out.println(formatSubscript("x + cos(x)"));
+        //added in parameters just so that the program would work; feel free to change it
+        System.out.println(formatSubscript("3x^2 + 5x^3 + 6x^2 + cos(x)", true));
+        System.out.println(formatSubscript("x + cos(x)", false));
 
         // System.out.println(diff.differentiateString("69"));
     }
