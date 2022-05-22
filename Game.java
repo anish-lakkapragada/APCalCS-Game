@@ -132,6 +132,7 @@ public class Game extends JFrame implements KeyListener, ActionListener {
 
         if (isNetworking) {
             boardState = new BoardState();
+            functionLabel.setText("f(x) = ?");
             System.out.println("starting thread");
             (new Thread(() -> {
                 try {
