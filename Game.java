@@ -229,6 +229,11 @@ public class Game extends JFrame implements KeyListener, ActionListener {
             pointsLabel.setText("Points: " + boardState.getPoints());
         }
 
+        // else if (correctDerivative.equals(tm.getFunction(r, c - 1))) {
+        // boardState.incrementPoints(3);
+        // pointsLabel.setText("Points: " + boardState.getPoints());
+        // }
+
         System.out.println("num rows: " + numRows);
         System.out.println("passed row: " + r);
     }
@@ -246,13 +251,14 @@ public class Game extends JFrame implements KeyListener, ActionListener {
             System.out.println("this is the new row: " + newRow);
 
             if (newRow < 0 && !this.isTogether) {
+                evaluatePoints(0, newCol); // evaluate at this level
                 updateQuestion(null); // they kinda done now
+                return;
             }
 
             else if (newRow < 0 && this.isTogether && !networkAddedPoints) {
                 System.out.println("yoo whats good tho");
-                boardState.incrementPoints(3);
-                pointsLabel.setText("Points: " + boardState.getPoints());
+                evaluatePoints(0, tm.curCol());
                 networkAddedPoints = true;
                 return;
             }
