@@ -73,13 +73,6 @@ public class Game extends JFrame implements KeyListener, ActionListener {
         welcomeScreen = new WelcomeScreen(this);
     }
 
-    /**
-     * Starts the game, after all users have been taken care of.
-     * @param numOrders number of derivatives, as chosen by the player.
-     */
-    public void startGame(int numOrders) {
-
-    // after all the users have been taken care of
     public void startGame(int numOrders, boolean isNetworking) {
         setSize(1200, numOrders * tileHeight + 300); // resize here!
 
@@ -244,6 +237,7 @@ public class Game extends JFrame implements KeyListener, ActionListener {
      * Moves the player to a new position on the grid,
      * as specified by <code>newRow</code> and
      * <code>newCol</code>.
+     * 
      * @param newRow new row position
      * @param newCol new column postition
      */
