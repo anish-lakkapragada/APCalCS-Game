@@ -15,11 +15,14 @@ public class Client extends JFrame implements ActionListener {
     private static final String SERVER_IP = "localhost";
 
     // https://www.youtube.com/watch?v=h2zi2lVNhtk
+    private JLabel gLabel;
     private JButton sendButton; // sends data to the Server
     private JButton restartButton;
     private JTextField ipTF, functionTF; // enters in the stuff over here
     private Socket socket; // client socket
     private PrintWriter pw;
+    private JLabel ipLabel;
+    private JLabel functionLabel;
 
     public Client() throws IOException {
 
@@ -29,31 +32,43 @@ public class Client extends JFrame implements ActionListener {
         setFocusable(true);
         getContentPane().setLayout(null);
 
-        JLabel ipLabel = new JLabel("Enter IP Address of Computer to Send to Below!", SwingConstants.CENTER);
-        ipLabel.setFont(new Font("Calibri", Font.BOLD, 10));
-        ipLabel.setBounds(500, 75, 300, 50);
+        gLabel = new JLabel("Derivatiles", SwingConstants.CENTER);
+        gLabel.setBounds(450, 5, 300, 100);
+        gLabel.setFont(new Font("Calibri", Font.BOLD, 40));
+        add(gLabel);
+
+        JLabel labelTwo = new JLabel("(Online Mode!)");
+        labelTwo.setBounds(540, 45, 300, 100);
+        labelTwo.setFont(new Font("Calibri", Font.BOLD, 15));
+        add(labelTwo);
+
+        ipLabel = new JLabel("Enter IP Address of Computer to Send to Below!", SwingConstants.CENTER);
+        ipLabel.setFont(new Font("Calibri", Font.BOLD, 20));
+        ipLabel.setBounds(300, 165, 600, 50);
         add(ipLabel);
 
         ipTF = new JTextField("");
-        ipTF.setBounds(500, 130, 300, 50);
+        ipTF.setBounds(450, 215, 300, 50);
         add(ipTF);
 
-        JLabel label = new JLabel("Enter function below!", SwingConstants.CENTER);
-        label.setFont(new Font("Calibri", Font.BOLD, 15));
-        label.setBounds(500, 200, 300, 50);
-        add(label);
+        functionLabel = new JLabel("Enter function below!", SwingConstants.CENTER);
+        functionLabel.setFont(new Font("Calibri", Font.BOLD, 20));
+        functionLabel.setBounds(450, 310, 300, 50);
+        add(functionLabel);
 
-        functionTF = new JTextField("f(x) = ");
-        functionTF.setBounds(500, 275, 300, 50);
+        functionTF = new JTextField(" f(x) = ");
+        functionTF.setBounds(450, 360, 300, 50);
         add(functionTF);
 
         sendButton = new JButton("Send to other!");
-        sendButton.setBounds(500, 335, 300, 50);
+        sendButton.setFont(new Font("Calibri", Font.ITALIC, 15));
+        sendButton.setBounds(450, 420, 300, 50);
         sendButton.addActionListener(this);
         add(sendButton);
 
         restartButton = new JButton("Restart connection!");
-        restartButton.setBounds(500, 395, 300, 50);
+        restartButton.setFont(new Font("Calibri", Font.ITALIC, 15));
+        restartButton.setBounds(450, 480, 300, 50);
         restartButton.addActionListener(this);
         add(restartButton);
 
@@ -103,6 +118,16 @@ public class Client extends JFrame implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
+
+        // String curIp = ipTF.getText();
+        // String curFunction = functionTF.getText().substring(7);
+
+        // if (curIp.isEmpty() && curFunction.isEmpty()) {
+        // ipLabel.setForeground(Color.RED);
+        // functionLabel.setForeground(Color.RED);
+        // return;
+        // }
+
         if (e.getSource() == sendButton) {
             try {
                 if (socket == null) {
