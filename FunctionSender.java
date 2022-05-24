@@ -38,7 +38,7 @@ public class FunctionSender extends JFrame implements ActionListener {
         gLabel.setFont(new Font("Calibri", Font.BOLD, 40));
         add(gLabel);
 
-        JLabel labelTwo = new JLabel("(Online Mode!)");
+        JLabel labelTwo = new JLabel("(Online Mode)");
         labelTwo.setBounds(540, 45, 300, 100);
         labelTwo.setFont(new Font("Calibri", Font.BOLD, 15));
         add(labelTwo);
@@ -57,7 +57,7 @@ public class FunctionSender extends JFrame implements ActionListener {
         functionLabel.setBounds(450, 310, 300, 50);
         add(functionLabel);
 
-        functionTF = new JTextField(" f(x) = ");
+        functionTF = new JTextField("f(x) = ");
         functionTF.setBounds(450, 360, 300, 50);
         add(functionTF);
 
