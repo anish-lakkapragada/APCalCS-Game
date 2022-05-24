@@ -29,8 +29,9 @@ public class Differentiate {
      * Performs differentiation calculations on a specified function.
      * 
      * @param function A math function given in string form.
-     * Preconditions: A polynomial +/- sin or cos function.
-     * Coefficients included for polynomials but not for sine and cosine.
+     *                 Preconditions: A polynomial +/- sin or cos function.
+     *                 Coefficients included for polynomials but not for sine and
+     *                 cosine.
      *
      * @return The derivative of the function in string form.
      */
@@ -209,7 +210,8 @@ public class Differentiate {
     /**
      * Returns the 1st to <code>numOrders</code>-th derivatives of
      * <code>function</code> as Strings in an array.
-     * @param function function to get derivatives
+     * 
+     * @param function  function to get derivatives
      * @param numOrders number of derivatives to get
      * @return array of derivatives
      */
@@ -243,7 +245,8 @@ public class Differentiate {
             }
         }
 
-        //added in parameters just so that the program would work; feel free to change it
+        // added in parameters just so that the program would work; feel free to change
+        // it
         System.out.println(formatSubscript("3x^2 + 5x^3 + 6x^2 + cos(x)", true));
         System.out.println(formatSubscript("x + cos(x)", false));
 

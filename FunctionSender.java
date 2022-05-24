@@ -7,11 +7,12 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 /**
- * Client class should be ran (in isolation) to give the other user functions to
+ * FunctionSender class should be ran (in isolation) to give the other user
+ * functions to
  * make their
  * lives hell.
  */
-public class Client extends JFrame implements ActionListener {
+public class FunctionSender extends JFrame implements ActionListener {
     private static final String SERVER_IP = "localhost";
 
     // https://www.youtube.com/watch?v=h2zi2lVNhtk
@@ -24,7 +25,7 @@ public class Client extends JFrame implements ActionListener {
     private JLabel ipLabel;
     private JLabel functionLabel;
 
-    public Client() throws IOException {
+    public FunctionSender() throws IOException {
 
         setSize(1200, 600);
         setTitle("Derivatiles");
@@ -118,7 +119,6 @@ public class Client extends JFrame implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-
         // String curIp = ipTF.getText();
         // String curFunction = functionTF.getText().substring(7);
 
@@ -160,6 +160,6 @@ public class Client extends JFrame implements ActionListener {
     }
 
     public static void main(String[] args) throws IOException {
-        Client client = new Client(); // 192.168.4.108
+        FunctionSender client = new FunctionSender(); // 192.168.4.108
     }
 }
