@@ -134,7 +134,6 @@ public class Game extends JFrame implements KeyListener, ActionListener {
         }
 
         curRow = numRows - 1;
-        System.out.println(Thread.currentThread().getName());
         tm = new TileManager(numRows, numCols, tileWidth, tileHeight, 125, 200, new String[numRows][numCols], this);
         tm.paintComponent(getGraphics());
         add(tm);
@@ -142,19 +141,11 @@ public class Game extends JFrame implements KeyListener, ActionListener {
         if (isNetworking) {
             boardState = new BoardState();
             functionLabel.setText("f(x) = ?");
-            System.out.println("starting thread");
             (new Thread(() -> {
                 try {
-                    // System.out.println("i learned to lead");
-                    // togetherPlay(numOrders);
-                    System.out.println("back to back");
 
                     listener = new ServerSocket(PORT);
                     socket = listener.accept();
-
-                    System.out.println("wahts up");
-
-                    System.out.println("nice");
 
                     this.isTogether = true;
                     // ok so I basically need a condition on this
@@ -165,14 +156,10 @@ public class Game extends JFrame implements KeyListener, ActionListener {
                         try {
                             Thread.sleep(1500); // sleep for 1.5 seeconds
                         } catch (InterruptedException exx) {
-                            System.out.println("BS exception");
                         }
-                        System.out.println("reiterating");
                     }
 
                 } catch (IOException ex) {
-                    System.out.println(ex);
-                    System.out.println("exception already");
                     return;
                 }
             })).start();
@@ -211,10 +198,8 @@ public class Game extends JFrame implements KeyListener, ActionListener {
      */
     public void togetherPlay(int numOrders) throws IOException {
 
-        System.out.println("number of orders: " + numOrders);
         numRows = numOrders;
 
-        System.out.println("starting the game right now");
         ServerSocket listener = new ServerSocket(PORT);
         socket = listener.accept(); // listens for the connection
 
@@ -238,14 +223,6 @@ public class Game extends JFrame implements KeyListener, ActionListener {
             boardState.incrementPoints(3);
             pointsLabel.setText("Points: " + boardState.getPoints());
         }
-
-        // else if (correctDerivative.equals(tm.getFunction(r, c - 1))) {
-        // boardState.incrementPoints(3);
-        // pointsLabel.setText("Points: " + boardState.getPoints());
-        // }
-
-        System.out.println("num rows: " + numRows);
-        System.out.println("passed row: " + r);
     }
 
     /**
@@ -258,7 +235,6 @@ public class Game extends JFrame implements KeyListener, ActionListener {
      */
     public void moveTo(int newRow, int newCol) {
         if (Math.abs(newCol - tm.curCol()) == 0) {
-            System.out.println("this is the new row: " + newRow);
 
             if (newRow < 0 && !this.isTogether) {
                 evaluatePoints(0, newCol); // evaluate at this level
@@ -267,7 +243,6 @@ public class Game extends JFrame implements KeyListener, ActionListener {
             }
 
             else if (newRow < 0 && this.isTogether && !networkAddedPoints) {
-                System.out.println("yoo whats good tho");
                 evaluatePoints(0, tm.curCol());
                 networkAddedPoints = true;
                 return;
@@ -294,11 +269,9 @@ public class Game extends JFrame implements KeyListener, ActionListener {
                 pw.println("done");
                 pw.flush();
 
-                System.out.println("whats good bois");
                 listener.close();
                 socket.close();
             } catch (Exception ex) {
-                System.out.println("java sucks");
             }
 
             this.getContentPane().removeAll();
@@ -316,7 +289,6 @@ public class Game extends JFrame implements KeyListener, ActionListener {
      */
     public void keyPressed(KeyEvent e) {
         int keyCode = e.getKeyCode();
-        System.out.println("called");
         if (tm == null) {
             return;
         }
@@ -340,7 +312,6 @@ public class Game extends JFrame implements KeyListener, ActionListener {
 
             case 87:
             case KeyEvent.VK_UP:
-                System.out.println("w or up");
                 moveTo(tm.curRow() - 1, tm.curCol()); // selects the current column
                 break;
 
