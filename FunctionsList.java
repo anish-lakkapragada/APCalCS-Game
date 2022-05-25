@@ -8,7 +8,6 @@ import java.io.*;
  * 
  */
 public class FunctionsList {
-    // private String fileName;
     public Queue<String> questionsQueue = new LinkedList<String>();
 
     /**
