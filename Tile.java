@@ -7,7 +7,6 @@ import java.util.concurrent.TimeUnit;
 /**
  * Creates the grid tiles upon which the game is played.
  * 
- * @version 5/18/22 - 11:50 pm
  */
 public class Tile
         extends JComponent {
@@ -89,7 +88,7 @@ public class Tile
     }
 
     /**
-     * Returns the label's text.
+     * Returns <code>label</code>'s text.
      * 
      * @return label's text
      */
