@@ -6,7 +6,6 @@ import java.io.*;
  * Reads "base functions" for users to differentiate,
  * taken from the <code>Functions.txt</code> file.
  * 
- * @version 5/18/22 - 11:50 pm
  */
 public class FunctionsList {
     // private String fileName;
@@ -26,7 +25,6 @@ public class FunctionsList {
         }
 
         catch (FileNotFoundException f) {
-            // System.out.println("File was not found");
             return;
         }
 
