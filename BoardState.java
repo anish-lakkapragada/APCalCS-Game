@@ -63,17 +63,13 @@ public class BoardState {
 
                 }
 
-                if (!hasTrig && !hasPower) {
-                    hasPower = true;
-                }
-
                 // however, if the derivative is just 0, then add a constant
                 if (correctDerivative == "0") {
                     temp[j] = Integer.toString((int) (Math.random() * 9) + 1);
                     continue;
                 }
 
-                temp[j] = randomFunction(hasPower, power, hasTrig);
+                temp[j] = randomFunction(true, power, true);
             }
 
             temp[(int) (Math.random() * numOptions)] = correctDerivative;
