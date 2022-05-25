@@ -1,3 +1,5 @@
+package src;
+
 import javax.swing.*;
 import java.awt.event.KeyListener;
 import java.awt.event.KeyEvent;
@@ -77,10 +79,10 @@ public class Game extends JFrame implements KeyListener, ActionListener {
      * Starts up a game with a specified number of derivative orders,
      * and either networking or no networking.
      * 
-     * @param numOrders     number of derivatives to find in this game
-     * @param isNetworking  this specific game is multiplayer if 
-     *                      <code>isNetworking</code> is true,
-     *                      and single-player if it's false.
+     * @param numOrders    number of derivatives to find in this game
+     * @param isNetworking this specific game is multiplayer if
+     *                     <code>isNetworking</code> is true,
+     *                     and single-player if it's false.
      */
     public void startGame(int numOrders, boolean isNetworking) {
         setSize(1200, numOrders * tileHeight + 300); // resize here!
@@ -152,6 +154,7 @@ public class Game extends JFrame implements KeyListener, ActionListener {
                     while (this.isTogether) {
                         bf = new BufferedReader(new InputStreamReader(socket.getInputStream())); // constantly read in
                         String str = bf.readLine(); // read in the function.
+                        networkAddedPoints = false; // restart
                         updateQuestion(str.substring("f(x) = ".length()));
                         try {
                             Thread.sleep(1500); // sleep for 1.5 seeconds
@@ -185,35 +188,13 @@ public class Game extends JFrame implements KeyListener, ActionListener {
         if (newQuestion == null && fl.hasQuestions()) {
             newQuestion = fl.nextFunction();
         }
+
         correctDerivatives = d.correctAnswers(newQuestion, numRows);
         String[][] gridLabels = BoardState.getGrid(newQuestion, numRows, numCols);
         tm.setLabels(gridLabels);
         functionLabel.setText("<html> f(x) = " + Differentiate.formatSubscript(newQuestion, false) + " </html>");
 
         tm.setLoc(curRow, (int) (Math.random() * numCols), getGraphics()); // select
-    }
-
-    /**
-     * Initiate play time together.
-     */
-    public void togetherPlay(int numOrders) throws IOException {
-
-        numRows = numOrders;
-
-        ServerSocket listener = new ServerSocket(PORT);
-        socket = listener.accept(); // listens for the connection
-
-        isTogether = true;
-
-        while (isTogether) {
-            bf = new BufferedReader(new InputStreamReader(socket.getInputStream())); // constantly read in the given
-                                                                                     // functions
-            String str = bf.readLine(); // read in the function.
-
-        }
-
-        listener.close();
-        socket.close();
     }
 
     private void evaluatePoints(int r, int c) {
@@ -236,6 +217,7 @@ public class Game extends JFrame implements KeyListener, ActionListener {
     public void moveTo(int newRow, int newCol) {
         if (Math.abs(newCol - tm.curCol()) == 0) {
 
+            System.out.println("this is network added points: " + networkAddedPoints);
             if (newRow < 0 && !this.isTogether) {
                 evaluatePoints(0, newCol); // evaluate at this level
                 updateQuestion(null); // they kinda done now
@@ -288,6 +270,8 @@ public class Game extends JFrame implements KeyListener, ActionListener {
      * A or left arrow means go left (c - 1)
      */
     public void keyPressed(KeyEvent e) {
+        System.out.println("getting pressed");
+        System.out.println("current row, column: " + tm.curRow() + " : " + tm.curCol());
         int keyCode = e.getKeyCode();
         if (tm == null) {
             return;
@@ -332,8 +316,4 @@ public class Game extends JFrame implements KeyListener, ActionListener {
         Game game = new Game();
     }
 
-    public static void restartGame(int numOrders) {
-        Game game = new Game();
-        game.startGame(numOrders, true);
-    }
 }

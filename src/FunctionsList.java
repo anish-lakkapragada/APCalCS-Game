@@ -1,3 +1,5 @@
+package src;
+
 import java.io.File;
 import java.util.*;
 import java.io.*;
@@ -24,6 +26,7 @@ public class FunctionsList {
         }
 
         catch (FileNotFoundException f) {
+            System.out.println("file is not found");
             return;
         }
 
