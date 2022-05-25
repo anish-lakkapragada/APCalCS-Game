@@ -1,3 +1,5 @@
+import java.util.*;
+
 /**
  * Controls the current state of the board.
  */
@@ -44,36 +46,42 @@ public class BoardState {
         // returns a grid of numDerivs by numOptions
         String function = f;
         String[][] derivativeChoices = new String[numDerivs][numOptions];
+        Set<String> tempChoices;
         for (int i = numDerivs - 1; i >= 0; i--) {
             String correctDerivative = d.differentiateString(function);
-            String[] temp = new String[numOptions];
-            for (int j = 0; j < numOptions; j++) {
-                boolean hasTrig = false;
-                if (correctDerivative.indexOf("cos") >= 0 || correctDerivative.indexOf("sin") >= 0) {
-                    hasTrig = true;
+            tempChoices = new HashSet<String>();
+
+            int correctIndex = (int) (Math.random() * numOptions);
+            while (tempChoices.size() < numOptions) {
+                if (tempChoices.size() == correctIndex) {
+                    tempChoices.add(correctDerivative);
+                    continue;
+                }
+
+                if (correctDerivative == "0") {
+                    tempChoices.add(Integer.toString((int) (Math.random() * 9) + 1));
+                    continue;
                 }
 
                 int power = 0;
                 int index = correctDerivative.indexOf("^");
                 boolean hasPower = index >= 0;
                 if (hasPower) {
-                    System.out.println("this CORRECT DERIVATIVE: " + correctDerivative);
                     power = Integer.parseInt(correctDerivative.substring(index + 1,
                             index + 2));
 
                 }
 
-                // however, if the derivative is just 0, then add a constant
-                if (correctDerivative == "0") {
-                    temp[j] = Integer.toString((int) (Math.random() * 9) + 1);
-                    continue;
-                }
+                tempChoices.add(randomFunction(true, power, true));
 
-                temp[j] = randomFunction(true, power, true);
             }
 
-            temp[(int) (Math.random() * numOptions)] = correctDerivative;
-            derivativeChoices[i] = temp;
+            System.out.println("this is temp choices:" + tempChoices);
+
+            List<String> choicesShuffle = new ArrayList<String>(tempChoices);
+            Collections.shuffle(choicesShuffle);
+            derivativeChoices[i] = choicesShuffle.toArray(derivativeChoices[i]);
+
             function = correctDerivative; // set it to the derivative
         }
 

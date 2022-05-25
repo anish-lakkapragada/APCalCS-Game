@@ -40,17 +40,27 @@ public class Differentiate {
         String answer = "";
         boolean uselessAndOnlyForConstAtBeginningCase = false;
         for (int i = 0; i < terms.length; i++) {
+
+            String termOrSign = terms[i];
+
+            System.out.println("this is termor sign: " + terms[i]);
+
             // CORNER CASE: ONLY A CONSTANT
             if (terms.length == 1 && terms[i].indexOf("x") < 0) {
+                System.out.println("this is terms[i]: " + terms[i]);
                 answer = "0";
                 break;
             }
 
-            if (uselessAndOnlyForConstAtBeginningCase) {
+            else if (uselessAndOnlyForConstAtBeginningCase) {
                 uselessAndOnlyForConstAtBeginningCase = false;
+                if ((termOrSign.equals("+") || termOrSign.equals("-"))) {
+                    answer += termOrSign + " ";
+                }
                 continue;
             }
-            String termOrSign = terms[i];
+
+            System.out.println("this is termor sign: " + termOrSign);
             if (!(termOrSign.equals("+") || termOrSign.equals("-"))) {
                 if (termOrSign.equals("x") && termOrSign.length() == 1) {
                     answer += "1 ";
@@ -104,11 +114,11 @@ public class Differentiate {
 
                 // "...+"
                 // "...-"
-                else {
+                else if (!(termOrSign.equals("+") || termOrSign.equals("-"))) {
                     String derivTerm = derivatives.get(termOrSign);
                     String fullDerivTerm;
-                    
-                    //if (derivCoeff != 1) => fullDerivTerm = derivCoeff + derivTerm;
+
+                    // if (derivCoeff != 1) => fullDerivTerm = derivCoeff + derivTerm;
 
                     if (answer.length() > 0) {
                         char sign = answer.charAt(answer.length() - 2);
@@ -129,7 +139,6 @@ public class Differentiate {
             }
 
             else {
-
                 answer += termOrSign + " ";
             }
         }
@@ -204,16 +213,7 @@ public class Differentiate {
 
     public static void main(String[] args) {
         Differentiate diff = new Differentiate();
-
-        FunctionsList fl = new FunctionsList("functions.txt");
-        while (fl.hasQuestions()) {
-            int i = 0;
-            String function = fl.nextFunction();
-            while (i < 10) {
-                i++;
-                break;
-            }
-        }
+        System.out.println(diff.differentiateString("15120 - sin(x)"));
     }
 
 }
