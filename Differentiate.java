@@ -107,10 +107,9 @@ public class Differentiate {
                 else {
                     String derivTerm = derivatives.get(termOrSign);
                     String fullDerivTerm;
-                    /*
-                     * if (derivCoeff != 1)
-                     * fullDerivTerm = derivCoeff + derivTerm;
-                     */
+                    
+                    //if (derivCoeff != 1) => fullDerivTerm = derivCoeff + derivTerm;
+
                     if (answer.length() > 0) {
                         char sign = answer.charAt(answer.length() - 2);
                         if (sign == '-' && derivTerm.charAt(0) == '-') {
