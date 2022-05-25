@@ -98,7 +98,7 @@ public class Tile
 
     /**
      * Toggles the color and appearance of the this tile,
-     * to indicate movement around the grid (of tiles.)
+     * to indicate movement around the grid (of tiles).
      */
     public void toggleSelected() {
         Font f = label.getFont();
