@@ -45,7 +45,7 @@ public class TileManager extends JComponent {
 
     @Override
     public void paintComponent(Graphics g) {
-        System.out.println("tile manager paint called");
+        // System.out.println("tile manager paint called");
         super.paintComponent(g);
         for (int i = 0; i < numRows; i++) {
             for (int j = 0; j < numCols; j++) {
@@ -64,6 +64,7 @@ public class TileManager extends JComponent {
     /**
      * Returns the function at a specified
      * point on the grid.
+     * 
      * @param r row of function to return
      * @param c column of function to return
      * @return The function at [r][c].
@@ -97,9 +98,9 @@ public class TileManager extends JComponent {
      * @param r row to look at
      * @param c column to look at
      * @return True if [r][c] is a valid location on the grid,
-     * false otherwise.
+     *         false otherwise.
      */
-    public boolean validLoc(int r, int c) {
+    private boolean validLoc(int r, int c) {
         return r >= 0 && r < numRows && c >= 0 && c < numCols;
     }
 
@@ -113,7 +114,7 @@ public class TileManager extends JComponent {
      */
     public int setLoc(int newRow, int newCol, Graphics g) {
         if (!validLoc(newRow, newCol)) {
-            System.out.println("nah");
+            // System.out.println("nah");
             return 0;
         }
 
@@ -153,6 +154,7 @@ public class TileManager extends JComponent {
 
     /**
      * Returns the current state of the grid as a 2-D array.
+     * 
      * @return grid (in its current state)
      */
     public Tile[][] getGrid() {

@@ -26,7 +26,7 @@ public class FunctionsList {
         }
 
         catch (FileNotFoundException f) {
-            System.out.println("File was not found");
+            // System.out.println("File was not found");
             return;
         }
 

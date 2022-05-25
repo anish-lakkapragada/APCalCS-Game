@@ -13,8 +13,6 @@ import java.util.TimerTask;
  * lives hell.
  */
 public class FunctionSender extends JFrame implements ActionListener {
-    private static final String SERVER_IP = "localhost";
-
     // https://www.youtube.com/watch?v=h2zi2lVNhtk
     private JLabel gLabel;
     private JButton sendButton; // sends data to the Server
@@ -89,7 +87,7 @@ public class FunctionSender extends JFrame implements ActionListener {
                 } catch (Exception e) {
                 }
 
-                System.out.println("still here");
+                // System.out.println("still here");
             }
 
             // buffered reader is created.
@@ -137,14 +135,14 @@ public class FunctionSender extends JFrame implements ActionListener {
             }
 
             catch (Exception ex) {
-                System.out.println("didn't work");
-                System.out.println(ex);
+                // System.out.println("didn't work");
+                // System.out.println(ex);
                 return;
             }
 
             pw.println(functionTF.getText()); // yeet memers
             pw.flush(); // flush the data, don't close the socket though
-            System.out.println("flusing it out");
+            // System.out.println("flusing it out");
 
             // 192.168.4.27
         }

@@ -24,12 +24,13 @@ public class Tile
 
     /**
      * Constructor method.
-     * @param lbl the JLabel that goes on this specific tile
-     * @param tX x-coordinate of tile's top left corner.
-     * @param tY y-coordinate of tile's top left corner.
-     * @param width width of the tile.
+     * 
+     * @param lbl    the JLabel that goes on this specific tile
+     * @param tX     x-coordinate of tile's top left corner.
+     * @param tY     y-coordinate of tile's top left corner.
+     * @param width  width of the tile.
      * @param height height of the tile.
-     * @param frame JFrame of the tile.
+     * @param frame  JFrame of the tile.
      */
     public Tile(String lbl, int tX, int tY, int width, int height, JFrame frame) {
         topLeftX = tX;
@@ -69,9 +70,10 @@ public class Tile
 
     /**
      * Adds a label of a specified color.
+     * 
      * @param color the new label will be of this color
      */
-    public void addLabel(Color color) {
+    private void addLabel(Color color) {
         label.setForeground(color);
         label.setBounds((int) (topLeftX + 0.1 * width), (int) (topLeftY + 0.1 * height), (int) (width * 0.8), height);
 
@@ -79,6 +81,7 @@ public class Tile
 
     /**
      * Sets the text inside this tile's JLabel.
+     * 
      * @param newLabel text to set
      */
     public void setLabel(String newLabel) {
@@ -87,6 +90,7 @@ public class Tile
 
     /**
      * Returns the label's text.
+     * 
      * @return label's text
      */
     public String getText() {
@@ -94,21 +98,22 @@ public class Tile
     }
 
     /**
-     * Toggles the color of the selected tile.
+     * Toggles the color and appearance of the this tile,
+     * to indicate movement around the grid (of tiles.)
      */
     public void toggleSelected() {
-        System.out.println(currentColor);
+        Font f = label.getFont();
         if (currentColor.equals(selectedColor)) {
             currentColor = defaultColor;
         }
 
         else {
-            System.out.println("ahhahah");
             currentColor = selectedColor;
         }
 
         repaint();
+        label.setFont(f.deriveFont(f.getStyle() ^ Font.BOLD));
         label.setForeground(currentColor);
-    }
 
+    }
 }
