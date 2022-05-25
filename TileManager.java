@@ -3,9 +3,8 @@ import java.util.concurrent.TimeUnit;
 import javax.swing.*;
 
 /**
- * Tile Manager class for managing the tiles.
+ * Manages the tiles in the game grid.
  * 
- * @version 5/18/22 - 11:50 pm
  */
 public class TileManager extends JComponent {
     private Tile[][] grid;
@@ -77,7 +76,7 @@ public class TileManager extends JComponent {
      * Reset the labels with <code> gridLabels </code>
      * and redraw the grid in the same place.
      * 
-     * @param gridLabels
+     * @param gridLabels new labels for the grid
      */
     public void setLabels(String[][] gridLabels) {
         labels = gridLabels;
@@ -120,12 +119,9 @@ public class TileManager extends JComponent {
 
         if (curRow >= 0 && curCol >= 0) {
             grid[curRow][curCol].toggleSelected();
-            // grid[curRow][curCol].repaint();
         }
 
         grid[newRow][newCol].toggleSelected();
-        // grid[newRow][newCol].repaint();
-
         repaint();
 
         curRow = newRow;
