@@ -73,6 +73,15 @@ public class Game extends JFrame implements KeyListener, ActionListener {
         welcomeScreen = new WelcomeScreen(this);
     }
 
+    /**
+     * Starts up a game with a specified number of derivative orders,
+     * and either networking or no networking.
+     * 
+     * @param numOrders     number of derivatives to find in this game
+     * @param isNetworking  this specific game is multiplayer if 
+     *                      <code>isNetworking</code> is true,
+     *                      and single-player if it's false.
+     */
     public void startGame(int numOrders, boolean isNetworking) {
         setSize(1200, numOrders * tileHeight + 300); // resize here!
 
