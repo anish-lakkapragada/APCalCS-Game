@@ -1,7 +1,5 @@
 /**
  * Controls the current state of the board.
- * 
- * @version 5/18/22 - 11:50 pm
  */
 public class BoardState {
     private int points;
