@@ -216,6 +216,7 @@ public class Differentiate {
     public static void main(String[] args) {
         Differentiate diff = new Differentiate();
         System.out.println(diff.differentiateString("15120 - sin(x)"));
+        System.out.println("damn memer omment".hashCode());
     }
 
 }
