@@ -1,4 +1,4 @@
 # APCalCS-Game
 
-looks better
-bruh
+APCS Submission for final project.
+
