@@ -1,1 +1,0 @@
-typeSearchIndex = [{"l":"All Classes","url":"allclasses-index.html"},{"p":"<Unnamed>","l":"BoardState"},{"p":"<Unnamed>","l":"Differentiate"},{"p":"<Unnamed>","l":"FunctionSender"},{"p":"<Unnamed>","l":"FunctionsList"},{"p":"<Unnamed>","l":"Game"},{"p":"<Unnamed>","l":"Tile"},{"p":"<Unnamed>","l":"TileManager"},{"p":"<Unnamed>","l":"WelcomeScreen"}]
