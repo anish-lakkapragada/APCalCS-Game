@@ -60,7 +60,7 @@ public class BoardState {
                     continue;
                 }
 
-                if (correctDerivative == "0") {
+                if (correctDerivative.equals("0")) {
                     tempChoices.add(Integer.toString((int) (Math.random() * 9) + 1));
                     continue;
                 }
@@ -78,7 +78,6 @@ public class BoardState {
 
             }
 
-            System.out.println("this is temp choices:" + tempChoices);
 
             List<String> choicesShuffle = new ArrayList<String>(tempChoices);
             Collections.shuffle(choicesShuffle);

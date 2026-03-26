@@ -1,7 +1,6 @@
 package src;
 
 import java.util.*;
-import javax.swing.tree.TreeModel;
 
 /**
  * Performs differentiating calculations.
@@ -38,31 +37,27 @@ public class Differentiate {
 
         // "3x^2 + cos(x)" => ["3x^2", "+", "cos(x)"]
         // "3x^2 - cos(x)" => ["3x^2", "-", "cos(x)"]
-        String[] terms = function.split(" ");
+        String[] terms = function.trim().split(" ");
         String answer = "";
-        boolean uselessAndOnlyForConstAtBeginningCase = false;
+        boolean skipNextSign = false;
         for (int i = 0; i < terms.length; i++) {
 
             String termOrSign = terms[i];
 
-            System.out.println("this is termor sign: " + terms[i]);
-
             // CORNER CASE: ONLY A CONSTANT
             if (terms.length == 1 && terms[i].indexOf("x") < 0) {
-                System.out.println("this is terms[i]: " + terms[i]);
                 answer = "0";
                 break;
             }
 
-            else if (uselessAndOnlyForConstAtBeginningCase) {
-                uselessAndOnlyForConstAtBeginningCase = false;
+            else if (skipNextSign) {
+                skipNextSign = false;
                 if ((termOrSign.equals("+") || termOrSign.equals("-"))) {
                     answer += termOrSign + " ";
                 }
                 continue;
             }
 
-            System.out.println("this is termor sign: " + termOrSign);
             if (!(termOrSign.equals("+") || termOrSign.equals("-"))) {
                 if (termOrSign.equals("x") && termOrSign.length() == 1) {
                     answer += "1 ";
@@ -73,7 +68,7 @@ public class Differentiate {
                 if (!termOrSign.contains("x")) {
                     // 4 + x
                     if (answer.length() == 0) {
-                        uselessAndOnlyForConstAtBeginningCase = true;
+                        skipNextSign = true;
                     }
                     // x + 4 of x + 4 + x
                     else if (answer.length() > 0) {
@@ -103,12 +98,18 @@ public class Differentiate {
                     }
 
                     int derivCoefficient = 1;
-                    if (!derivativeTerm.substring(0, 1).equals("x")) {
-                        derivCoefficient = Integer.parseInt(derivativeTerm.substring(0, 1));
+                    // Parse multi-digit derivative coefficients
+                    int derivCoeffEnd = 0;
+                    while (derivCoeffEnd < derivativeTerm.length()
+                            && Character.isDigit(derivativeTerm.charAt(derivCoeffEnd))) {
+                        derivCoeffEnd++;
+                    }
+                    if (derivCoeffEnd > 0) {
+                        derivCoefficient = Integer.parseInt(derivativeTerm.substring(0, derivCoeffEnd));
                     }
 
                     String finalCoefficient = (derivCoefficient * preCoefficient) + "";
-                    String finalExpression = finalCoefficient + derivativeTerm.substring(1);
+                    String finalExpression = finalCoefficient + derivativeTerm.substring(derivCoeffEnd);
                     answer += finalExpression + " ";
                 }
 
@@ -216,7 +217,6 @@ public class Differentiate {
     public static void main(String[] args) {
         Differentiate diff = new Differentiate();
         System.out.println(diff.differentiateString("15120 - sin(x)"));
-        System.out.println("damn memer omment".hashCode());
     }
 
 }

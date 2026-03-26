@@ -5,14 +5,9 @@ import java.awt.event.KeyListener;
 import java.awt.event.KeyEvent;
 import java.awt.*;
 import java.util.*;
-import java.util.concurrent.TimeUnit;
-import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
 import java.net.*;
-import java.net.*;
-import java.io.*;
-import java.util.*;
 import java.net.InetAddress;
 
 /**
@@ -41,6 +36,9 @@ public class Game extends JFrame implements KeyListener, ActionListener {
     private JButton backButton; // goes back
     private WelcomeScreen welcomeScreen;
     private JLabel pointsLabel; // stores the points
+    private JLabel feedbackLabel; // shows correct/incorrect feedback
+    private JLabel timerLabel; // shows countdown timer
+    private JLabel streakLabel; // shows current streak
     private BoardState boardState;
     private FunctionsList fl;
     private TileManager tm;
@@ -48,6 +46,11 @@ public class Game extends JFrame implements KeyListener, ActionListener {
     private String[] correctDerivatives;
     private Differentiate d = new Differentiate();
     private int numRows;
+    private int streak = 0;
+    private javax.swing.Timer countdownTimer;
+    private int timeRemaining = 15; // seconds per question
+    private int questionsAnswered = 0;
+    private int questionsCorrect = 0;
 
     private static final int numCols = 5;
     private static final int tileWidth = 200;
@@ -64,9 +67,9 @@ public class Game extends JFrame implements KeyListener, ActionListener {
 
         }
 
-        correctDerivatives = new String[numRows];
         setFocusable(true);
-        addKeyListener(this); // WHY IS THE KEY LISTENER IGNORED
+        addKeyListener(this);
+        getContentPane().setLayout(null);
 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setTitle("Derivatiles");
@@ -88,18 +91,40 @@ public class Game extends JFrame implements KeyListener, ActionListener {
         setSize(1200, numOrders * tileHeight + 300); // resize here!
 
         numRows = numOrders;
+        correctDerivatives = new String[numRows];
+        streak = 0;
+        questionsAnswered = 0;
+        questionsCorrect = 0;
+
         functionLabel = new JLabel("", SwingConstants.CENTER);
-        // functionLabel.setHorizontalAlignment(JLabel.CENTER);
         functionLabel.setBounds(350, 50, 500, 45);
         functionLabel.setFont(new Font("Calibri", Font.BOLD, 25));
-        // panel.add(functionLabel);
         add(functionLabel);
 
         // add the points label
-        pointsLabel = new JLabel("Points: " + 0);
+        pointsLabel = new JLabel("Points: 0");
         pointsLabel.setFont(new Font("Calibri", Font.ITALIC, 20));
-        pointsLabel.setBounds(935, 60, 125, 25);
+        pointsLabel.setBounds(935, 20, 200, 25);
         add(pointsLabel);
+
+        // add the streak label
+        streakLabel = new JLabel("");
+        streakLabel.setFont(new Font("Calibri", Font.BOLD, 16));
+        streakLabel.setForeground(new Color(255, 140, 0));
+        streakLabel.setBounds(935, 50, 200, 25);
+        add(streakLabel);
+
+        // add the timer label
+        timerLabel = new JLabel("Time: 15s");
+        timerLabel.setFont(new Font("Calibri", Font.BOLD, 18));
+        timerLabel.setBounds(935, 80, 200, 25);
+        add(timerLabel);
+
+        // add feedback label
+        feedbackLabel = new JLabel("", SwingConstants.CENTER);
+        feedbackLabel.setFont(new Font("Calibri", Font.BOLD, 20));
+        feedbackLabel.setBounds(350, 10, 500, 30);
+        add(feedbackLabel);
 
         // add the back button
         backButton = new JButton("Go Back");
@@ -185,25 +210,163 @@ public class Game extends JFrame implements KeyListener, ActionListener {
     private void updateQuestion(String function) {
         curRow = numRows - 1;
         String newQuestion = function;
-        if (newQuestion == null && fl.hasQuestions()) {
+        if (newQuestion == null && fl != null && fl.hasQuestions()) {
             newQuestion = fl.nextFunction();
         }
 
+        if (newQuestion == null || newQuestion.trim().isEmpty()) {
+            showGameOver();
+            return;
+        }
+
+        newQuestion = newQuestion.trim();
         correctDerivatives = d.correctAnswers(newQuestion, numRows);
         String[][] gridLabels = BoardState.getGrid(newQuestion, numRows, numCols);
         tm.setLabels(gridLabels);
         functionLabel.setText("<html> f(x) = " + Differentiate.formatSubscript(newQuestion, false) + " </html>");
 
-        tm.setLoc(curRow, (int) (Math.random() * numCols), getGraphics()); // select
+        tm.setLoc(curRow, (int) (Math.random() * numCols), getGraphics());
+        resetTimer();
     }
 
     private void evaluatePoints(int r, int c) {
         String answeredDerivative = tm.getFunction(r, c);
         String correctDerivative = correctDerivatives[numRows - r - 1];
-        if (correctDerivative.equals(answeredDerivative)) {
-            boardState.incrementPoints(3);
-            pointsLabel.setText("Points: " + boardState.getPoints());
+        // Strip HTML tags for comparison
+        String cleanAnswer = answeredDerivative.replaceAll("<[^>]*>", "").trim();
+        String cleanCorrect = correctDerivative.trim();
+        if (cleanCorrect.equals(cleanAnswer)) {
+            int bonus = 3 + streak;
+            boardState.incrementPoints(bonus);
+            streak++;
+            questionsCorrect++;
+            showFeedback(true, bonus);
+        } else {
+            boardState.decrementPoints(1);
+            streak = 0;
+            showFeedback(false, -1);
         }
+        questionsAnswered++;
+        pointsLabel.setText("Points: " + boardState.getPoints());
+        updateStreakLabel();
+    }
+
+    private void showFeedback(boolean correct, int pointsDelta) {
+        if (correct) {
+            feedbackLabel.setForeground(new Color(0, 150, 0));
+            String msg = "Correct! +" + pointsDelta + " pts";
+            if (streak > 1) {
+                msg += " (streak x" + streak + "!)";
+            }
+            feedbackLabel.setText(msg);
+        } else {
+            feedbackLabel.setForeground(Color.RED);
+            feedbackLabel.setText("Wrong! -1 pt");
+        }
+        // Clear feedback after 2 seconds
+        javax.swing.Timer clearTimer = new javax.swing.Timer(2000, evt -> feedbackLabel.setText(""));
+        clearTimer.setRepeats(false);
+        clearTimer.start();
+    }
+
+    private void updateStreakLabel() {
+        if (streak >= 2) {
+            streakLabel.setText("Streak: " + streak + " in a row!");
+        } else {
+            streakLabel.setText("");
+        }
+    }
+
+    private void resetTimer() {
+        timeRemaining = 15;
+        timerLabel.setForeground(Color.BLACK);
+        timerLabel.setText("Time: 15s");
+        if (countdownTimer != null) {
+            countdownTimer.stop();
+        }
+        countdownTimer = new javax.swing.Timer(1000, evt -> {
+            timeRemaining--;
+            timerLabel.setText("Time: " + timeRemaining + "s");
+            if (timeRemaining <= 5) {
+                timerLabel.setForeground(Color.RED);
+            }
+            if (timeRemaining <= 0) {
+                countdownTimer.stop();
+                boardState.decrementPoints(2);
+                streak = 0;
+                questionsAnswered++;
+                pointsLabel.setText("Points: " + boardState.getPoints());
+                updateStreakLabel();
+                feedbackLabel.setForeground(Color.RED);
+                feedbackLabel.setText("Time's up! -2 pts");
+                javax.swing.Timer clearTimer = new javax.swing.Timer(1500, e2 -> feedbackLabel.setText(""));
+                clearTimer.setRepeats(false);
+                clearTimer.start();
+                if (!isTogether) {
+                    updateQuestion(null);
+                }
+            }
+        });
+        countdownTimer.start();
+    }
+
+    private void showGameOver() {
+        if (countdownTimer != null) {
+            countdownTimer.stop();
+        }
+        getContentPane().removeAll();
+        setSize(600, 500);
+
+        JLabel gameOverLabel = new JLabel("Game Over!", SwingConstants.CENTER);
+        gameOverLabel.setBounds(150, 30, 300, 60);
+        gameOverLabel.setFont(new Font("Calibri", Font.BOLD, 40));
+        add(gameOverLabel);
+
+        JLabel finalScoreLabel = new JLabel("Final Score: " + boardState.getPoints(), SwingConstants.CENTER);
+        finalScoreLabel.setBounds(150, 110, 300, 40);
+        finalScoreLabel.setFont(new Font("Calibri", Font.BOLD, 28));
+        finalScoreLabel.setForeground(new Color(0, 100, 200));
+        add(finalScoreLabel);
+
+        String accuracy = questionsAnswered > 0
+                ? String.format("%.0f%%", (questionsCorrect * 100.0 / questionsAnswered))
+                : "N/A";
+        JLabel statsLabel = new JLabel(
+                "<html><center>Questions: " + questionsAnswered
+                        + "<br>Correct: " + questionsCorrect
+                        + "<br>Accuracy: " + accuracy + "</center></html>",
+                SwingConstants.CENTER);
+        statsLabel.setBounds(150, 170, 300, 100);
+        statsLabel.setFont(new Font("Calibri", Font.PLAIN, 20));
+        add(statsLabel);
+
+        String grade;
+        Color gradeColor;
+        double pct = questionsAnswered > 0 ? (questionsCorrect * 100.0 / questionsAnswered) : 0;
+        if (pct >= 90) { grade = "A+ - AP Ready!"; gradeColor = new Color(0, 150, 0); }
+        else if (pct >= 80) { grade = "B - Almost there!"; gradeColor = new Color(0, 100, 200); }
+        else if (pct >= 70) { grade = "C - Keep practicing!"; gradeColor = new Color(255, 140, 0); }
+        else { grade = "Needs more practice!"; gradeColor = Color.RED; }
+
+        JLabel gradeLabel = new JLabel(grade, SwingConstants.CENTER);
+        gradeLabel.setBounds(150, 280, 300, 40);
+        gradeLabel.setFont(new Font("Calibri", Font.BOLD, 22));
+        gradeLabel.setForeground(gradeColor);
+        add(gradeLabel);
+
+        JButton playAgainButton = new JButton("Play Again");
+        playAgainButton.setBounds(200, 350, 200, 50);
+        playAgainButton.setFont(new Font("Calibri", Font.BOLD, 20));
+        playAgainButton.addActionListener(evt -> {
+            getContentPane().removeAll();
+            setSize(1200, 1000);
+            welcomeScreen = new WelcomeScreen(Game.this);
+        });
+        add(playAgainButton);
+
+        revalidate();
+        repaint();
+        setVisible(true);
     }
 
     /**
@@ -217,7 +380,6 @@ public class Game extends JFrame implements KeyListener, ActionListener {
     public void moveTo(int newRow, int newCol) {
         if (Math.abs(newCol - tm.curCol()) == 0) {
 
-            System.out.println("this is network added points: " + networkAddedPoints);
             if (newRow < 0 && !this.isTogether) {
                 evaluatePoints(0, newCol); // evaluate at this level
                 updateQuestion(null); // they kinda done now
@@ -270,33 +432,31 @@ public class Game extends JFrame implements KeyListener, ActionListener {
      * A or left arrow means go left (c - 1)
      */
     public void keyPressed(KeyEvent e) {
-        System.out.println("getting pressed");
-        System.out.println("current row, column: " + tm.curRow() + " : " + tm.curCol());
         int keyCode = e.getKeyCode();
         if (tm == null) {
             return;
         }
 
-        if (keyCode >= 49 && keyCode <= 48 + numCols) {
-            moveTo(tm.curRow(), (keyCode - 48) - 1);
+        if (keyCode >= KeyEvent.VK_1 && keyCode <= KeyEvent.VK_0 + numCols) {
+            moveTo(tm.curRow(), (keyCode - KeyEvent.VK_0) - 1);
             return;
         }
 
         switch (keyCode) {
 
-            case 65:
+            case KeyEvent.VK_A:
             case KeyEvent.VK_LEFT:
                 moveTo(tm.curRow(), tm.curCol() - 1);
                 break;
 
-            case 68:
+            case KeyEvent.VK_D:
             case KeyEvent.VK_RIGHT:
                 moveTo(tm.curRow(), tm.curCol() + 1);
                 break;
 
-            case 87:
+            case KeyEvent.VK_W:
             case KeyEvent.VK_UP:
-                moveTo(tm.curRow() - 1, tm.curCol()); // selects the current column
+                moveTo(tm.curRow() - 1, tm.curCol());
                 break;
 
             default:
