@@ -69,6 +69,7 @@ public class Game extends JFrame implements KeyListener, ActionListener {
 
         setFocusable(true);
         addKeyListener(this);
+        getContentPane().setLayout(null);
 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setTitle("Derivatiles");
